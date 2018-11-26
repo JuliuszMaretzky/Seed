@@ -81,6 +81,7 @@ namespace Seed
             //3
             Items.Add(new Armor("Plastikowa zbroja", "czeka na bal przebierańców", 1, 3, ArmorType.Jacket,
                 Locations[8]));
+			//4
         }
     }
 
