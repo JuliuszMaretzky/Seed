@@ -170,7 +170,7 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        public bool MoveDoppelganger(Direction direction)
+        public bool MoveFamiliar(Direction direction)
         {
             switch (direction)
             {
@@ -482,8 +482,7 @@ namespace Seed
         public void Lookout()
         {
             this.PrisonForFamiliars = this.FamiliarSpirit.presentLocation;
-            this.FamiliarSpirit.presentLocation = this.presentLocation;
-
+            
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nRozglądasz się i widzisz:");
             Console.WriteLine("Na północy");
@@ -501,15 +500,17 @@ namespace Seed
 
         private void LookAtDirection(Direction direction)
         {
-            if (this.FamiliarSpirit.MoveDoppelganger(direction))
+            this.FamiliarSpirit.presentLocation = this.presentLocation;
+
+            if (this.FamiliarSpirit.MoveFamiliar(direction))
             {
                 ShowNPCsInLocation(this.FamiliarSpirit, "blisko");
 
-                if (this.FamiliarSpirit.MoveDoppelganger(direction))
+                if (this.FamiliarSpirit.MoveFamiliar(direction))
                 {
                     ShowNPCsInLocation(this.FamiliarSpirit, "niedaleko");
 
-                    if (this.FamiliarSpirit.MoveDoppelganger(direction))
+                    if (this.FamiliarSpirit.MoveFamiliar(direction))
                     {
                         ShowNPCsInLocation(this.FamiliarSpirit, "daleko");
                     }
