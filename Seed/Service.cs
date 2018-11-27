@@ -150,15 +150,7 @@ namespace Seed
                 Character.Move(Direction.Unknown);
             }
         }
-
-        private static void CheckIfAggressive(IAttack character, World world)
-        {
-            if (character.IsAggressive == true)
-            {
-                LetCharacterAttack(character, world);
-            }
-        }
-
+        
         private static void LetCharacterAttack(IAttack attacker, World world)
         {
             Character character = (Character)attacker;
