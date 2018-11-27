@@ -151,33 +151,35 @@ namespace Seed
             }
         }
 
-        private static void CheckIfAggressive(IAttack Character, World world)
+        private static void CheckIfAggressive(IAttack character, World world)
         {
-            if (Character.IsAggressive == true)
+            if (character.IsAggressive == true)
             {
-                LetCharacterAttack((Character)Character, Character, world);
+                LetCharacterAttack(character, world);
             }
         }
 
-        private static void LetCharacterAttack(Character Character, IAttack Attacker, World world)
+        private static void LetCharacterAttack(IAttack attacker, World world)
         {
-            if (Attacker.IsAggressive == true)
+            Character character = (Character)attacker;
+
+            if (attacker.IsAggressive == true)
             {
-                foreach (var defender in Character.presentLocation.CharactersInLocation)
+                foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && Character.Strength >= 3 * defender.Armor && Character != defender)
+                    if (defender.HP > 0 && character.Strength >= 3 * defender.Armor && character != defender)
                     {
-                        Attacker.Attack(defender, world);
+                        attacker.Attack(defender, world);
                         break;
                     }
 
                 }
 
-                foreach (var defender in Character.presentLocation.CharactersInLocation)
+                foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && Character != defender)
+                    if (defender.HP > 0 && character != defender)
                     {
-                        Attacker.Attack(defender, world);
+                        attacker.Attack(defender, world);
                         break;
                     }
                 }
@@ -507,7 +509,7 @@ namespace Seed
 
                     if (typeof(IAttack).IsAssignableFrom(c.GetType()))
                     {
-                        LetCharacterAttack(c, (IAttack)c, world);
+                        LetCharacterAttack((IAttack)c, world);
                     }
                 }
 
