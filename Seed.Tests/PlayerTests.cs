@@ -742,6 +742,8 @@ namespace Seed.Tests
         [Test]
         public void ShouldBeAbleToSeeCharactersInASmallDistance()
         {
+            var prison = new Location();
+            var zyzyx = new Player(presentLocation:prison);
             var location1 = new Location();
             var location2 = new Location(parentDirection: Direction.South, parentLocation: location1);
             var location3 = new Location(parentDirection: Direction.South, parentLocation: location2);
@@ -755,7 +757,7 @@ namespace Seed.Tests
             var location11 = new Location(parentDirection: Direction.East, parentLocation: location1);
             var location12 = new Location(parentDirection: Direction.East, parentLocation: location11);
             var location13 = new Location(parentDirection: Direction.East, parentLocation: location12);
-            var player = new Player(presentLocation: location1);
+            var player = new Player(presentLocation: location1, familiarSpirit:zyzyx);
             var human1 = new Human("Azjata", presentLocation: location8);
             var human2 = new Human("Wiking", presentLocation: location3);
             var human3 = new Human("Americano", presentLocation: location13);
@@ -774,6 +776,7 @@ namespace Seed.Tests
                 "\r\nAustralijczyk jest daleko.\r\n" +
                 "Na wschodzie\r\nAzjata jest blisko.\r\n" +
                 "Na zachodzie\r\nAmericano jest daleko.\r\n"));
+            Assert.That(zyzyx.presentLocation, Is.EqualTo(prison));
 
         }
 

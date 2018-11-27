@@ -11,7 +11,7 @@ namespace Seed
         {
             Welcome(out string name);
             World world = new World();
-            Player player = new Player(name, presentLocation: world.Locations[0]);
+            Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
             Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
             player.Inventory.Add(scrap);
             Command(player, world);

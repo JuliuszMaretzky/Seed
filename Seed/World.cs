@@ -54,6 +54,8 @@ namespace Seed
             Locations.Add(new Location("Klatka schodowa", "Jesteś na klatce schodowej. Możesz stąd wejść " +
                 "do mieszkania na północy, albo też uciec schodami w dół.", Direction.North, Locations[7],
                 DoorState.Closed, DoorState.Closed));
+            //10
+            Locations.Add(new Location("Więzienie dla chowańców"));
 
             //Here horde of NPCs begins
             //0
@@ -70,6 +72,8 @@ namespace Seed
             //2
             NPCs.Add(new Human("Starszy brat", "chce kogoś zlać.", "Głupi, brzydki i śmierdzący. Prawdopodobnie" +
                 "bękart sąsiada", 5, 50, 1, Locations[3], true, true));
+            //3
+            NPCs.Add(new Player("Chowaniec", presentLocation: Locations[10]));
 
             //Here stack of Items begins
             //0
@@ -82,6 +86,8 @@ namespace Seed
             Items.Add(new Armor("Plastikowa zbroja", "czeka na bal przebierańców", 1, 3, ArmorType.Jacket,
                 Locations[8]));
 			//4
+
+            
         }
     }
 
