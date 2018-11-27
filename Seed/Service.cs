@@ -143,7 +143,7 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        private static void GetCharacterMove(IMove Character)
+        private static void MoveCharacter(IMove Character)
         {
             if (Character.IsLazy == false)
             {
@@ -494,12 +494,12 @@ namespace Seed
 
                 foreach (var c in world.NPCs)
                 {
-                    if (typeof(IMove).IsAssignableFrom(c.GetType()))
+                    if (c is IMove)
                     {
-                        GetCharacterMove((IMove)c);
+                        MoveCharacter((IMove)c);
                     }
 
-                    if (typeof(IAttack).IsAssignableFrom(c.GetType()))
+                    if (c is IAttack)
                     {
                         LetCharacterAttack((IAttack)c, world);
                     }
