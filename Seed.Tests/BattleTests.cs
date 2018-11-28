@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using Seed.Characters;
+using Seed.Locations;
+using Seed.Scenarios;
 
 namespace Seed.Tests
 {

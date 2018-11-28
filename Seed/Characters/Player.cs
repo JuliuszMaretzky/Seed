@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Seed.Items;
+using Seed.Locations;
+using Seed.Scenarios;
 
-namespace Seed
+namespace Seed.Characters
 {
     public sealed class Player : Character
     {

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Seed.Characters;
+using Seed.Locations;
 
-namespace Seed
+namespace Seed.Scenarios
 {
     public static class Battle
     {

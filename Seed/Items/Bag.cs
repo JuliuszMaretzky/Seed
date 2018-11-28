@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Seed.Locations;
 
-namespace Seed
+namespace Seed.Items
 {
     public class Bag : Item
     {

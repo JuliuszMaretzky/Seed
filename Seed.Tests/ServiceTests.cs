@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using NUnit.Framework;
+using Seed.Characters;
+using Seed.Items;
+using Seed.Locations;
 
 namespace Seed.Tests
 {
