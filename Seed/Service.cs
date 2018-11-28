@@ -11,7 +11,7 @@ namespace Seed
         {
             Welcome(out string name);
             World world = new World();
-            Player player = new Player(name, presentLocation: world.Locations[0]);
+            Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
             Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
             player.Inventory.Add(scrap);
             Command(player, world);
@@ -150,34 +150,28 @@ namespace Seed
                 Character.Move(Direction.Unknown);
             }
         }
-
-        private static void CheckIfAggressive(IAttack Character, World world)
+        
+        private static void LetCharacterAttack(IAttack attacker, World world)
         {
-            if (Character.IsAggressive == true)
-            {
-                LetCharacterAttack((Character)Character, Character, world);
-            }
-        }
+            Character character = (Character)attacker;
 
-        private static void LetCharacterAttack(Character Character, IAttack Attacker, World world)
-        {
-            if (Attacker.IsAggressive == true)
+            if (attacker.IsAggressive == true)
             {
-                foreach (var defender in Character.presentLocation.CharactersInLocation)
+                foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && Character.Strength >= 3 * defender.Armor && Character != defender)
+                    if (defender.HP > 0 && character.Strength >= 3 * defender.Armor && character != defender)
                     {
-                        Attacker.Attack(defender, world);
+                        attacker.Attack(defender, world);
                         break;
                     }
 
                 }
 
-                foreach (var defender in Character.presentLocation.CharactersInLocation)
+                foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && Character != defender)
+                    if (defender.HP > 0 && character != defender)
                     {
-                        Attacker.Attack(defender, world);
+                        attacker.Attack(defender, world);
                         break;
                     }
                 }
@@ -507,7 +501,7 @@ namespace Seed
 
                     if (typeof(IAttack).IsAssignableFrom(c.GetType()))
                     {
-                        LetCharacterAttack(c, (IAttack)c, world);
+                        LetCharacterAttack((IAttack)c, world);
                     }
                 }
 

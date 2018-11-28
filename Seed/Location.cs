@@ -29,7 +29,7 @@ namespace Seed
             Stack = new List<Item>();
             CharactersInLocation = new List<Character>();
             this.North = this.South = this.East = this.West = this.Up = this.Down =
-                    new Door(DoorState.Hidden, null);
+                    new Door(DoorState.Closed, null);
 
             if (!(parentLocation == null || parentDirection == Direction.Unknown))
             {

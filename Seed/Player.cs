@@ -28,6 +28,8 @@ namespace Seed
         public uint CarryingCapacity { get; private set; }
         public uint Burden { get; private set; }
         public List<Item> WornItems { get; private set; }
+        private Player FamiliarSpirit;
+        private Location PrisonForFamiliars;
 
         private List<string> RestSamples = new List<string>()
             {
@@ -43,7 +45,7 @@ namespace Seed
 
         public Player(string name = "Nullator", string description = "jest, ale... jak to możliwe?",
                 string overview = "Wygląda zupełnie jak ty.", int hp = 50, int energy = 25, uint strength = 5,
-                uint armor = 5, Location presentLocation = null) :
+                uint armor = 5, Location presentLocation = null, Player familiarSpirit=null) :
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
             if (name == String.Empty)
@@ -54,6 +56,7 @@ namespace Seed
             this.Energy = this.MaxEnergy = energy;
             this.CarryingCapacity = (uint)strength * 3;
             this.WornItems = new List<Item>();
+            this.FamiliarSpirit = familiarSpirit;
 
             this.Burden = 0;
             foreach (var item in this.Inventory)
@@ -167,7 +170,7 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        public bool MoveDoppelganger(Direction direction)
+        public bool MoveFamiliar(Direction direction)
         {
             switch (direction)
             {
@@ -478,8 +481,9 @@ namespace Seed
 
         public void Lookout()
         {
+            this.PrisonForFamiliars = this.FamiliarSpirit.presentLocation;
+            
             Console.ForegroundColor = ConsoleColor.White;
-            Player doppelganger = new Player(presentLocation: this.presentLocation);
             Console.WriteLine("\nRozglądasz się i widzisz:");
             Console.WriteLine("Na północy");
             LookAtDirection(Direction.North);
@@ -490,23 +494,25 @@ namespace Seed
             Console.WriteLine("Na zachodzie");
             LookAtDirection(Direction.West);
             Console.ForegroundColor = ConsoleColor.Gray;
+
+            this.FamiliarSpirit.presentLocation = PrisonForFamiliars;
         }
 
         private void LookAtDirection(Direction direction)
         {
-            Player doppelganger = new Player(presentLocation: this.presentLocation);
+            this.FamiliarSpirit.presentLocation = this.presentLocation;
 
-            if (doppelganger.MoveDoppelganger(direction))
+            if (this.FamiliarSpirit.MoveFamiliar(direction))
             {
-                ShowNPCsInLocation(doppelganger, "blisko");
+                ShowNPCsInLocation(this.FamiliarSpirit, "blisko");
 
-                if (doppelganger.MoveDoppelganger(direction))
+                if (this.FamiliarSpirit.MoveFamiliar(direction))
                 {
-                    ShowNPCsInLocation(doppelganger, "niedaleko");
+                    ShowNPCsInLocation(this.FamiliarSpirit, "niedaleko");
 
-                    if (doppelganger.MoveDoppelganger(direction))
+                    if (this.FamiliarSpirit.MoveFamiliar(direction))
                     {
-                        ShowNPCsInLocation(doppelganger, "daleko");
+                        ShowNPCsInLocation(this.FamiliarSpirit, "daleko");
                     }
                 }
             }
