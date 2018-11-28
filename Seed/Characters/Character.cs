@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Seed.Items;
+using Seed.Locations;
 
 namespace Seed.Characters
 {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using Seed.Characters;
+using Seed.Locations;
 
 namespace Seed.Tests
 {
@@ -9,11 +11,11 @@ namespace Seed.Tests
     class LocationTests
     {
         [Test]
-        public void ShouldHaveAllDirectionsHiddenAndNullAfterNoParametersConstructor()
+        public void ShouldHaveAllDirectionsClosedAndNullAfterNoParametersConstructor()
         {
             Location location = new Location();
 
-            var direction = new Door(DoorState.Hidden, null);
+            var direction = new Door(DoorState.Closed, null);
 
             Assert.That(location.North, Is.EqualTo(direction));
             Assert.That(location.South, Is.EqualTo(direction));
