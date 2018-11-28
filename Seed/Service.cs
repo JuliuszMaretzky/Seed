@@ -13,7 +13,7 @@ namespace Seed
     {
         public static void Navigate()
         {
-            Welcome(out string name);
+            string name=Welcome();
             World world = new World();
             Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
             Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
@@ -21,11 +21,11 @@ namespace Seed
             Command(player, world);
         }
 
-        private static void Welcome(out string name)
+        private static string Welcome()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Podaj swe imię: ");
-            name = Console.ReadLine();
+            string name = Console.ReadLine();
             if (name == "")
             {
                 name = "Bezimienny";
@@ -46,6 +46,7 @@ namespace Seed
             Console.WriteLine("Powodzenia...");
             PressSomething();
             Console.ForegroundColor = ConsoleColor.Gray;
+            return name;
         }
 
         public static void DisplayLongString(string longstring)
