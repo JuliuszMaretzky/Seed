@@ -147,17 +147,18 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        private static void MoveCharacter(IMove Character)
+        private static void MoveCharacter(Character character)
         {
-            if (Character.IsLazy == false)
+            IMove movingChar = (IMove) character;
+            if (movingChar.IsLazy == false)
             {
-                Character.Move(Direction.Unknown);
+                movingChar.Move(Direction.Unknown);
             }
         }
         
-        private static void LetCharacterAttack(IAttack attacker, World world)
+        private static void LetCharacterAttack(Character character, World world)
         {
-            Character character = (Character)attacker;
+            IAttack attacker = (IAttack) character;
 
             if (attacker.IsAggressive == true)
             {
@@ -500,12 +501,12 @@ namespace Seed
                 {
                     if (c is IMove)
                     {
-                        MoveCharacter((IMove)c);
+                        MoveCharacter(c);
                     }
 
                     if (c is IAttack)
                     {
-                        LetCharacterAttack((IAttack)c, world);
+                        LetCharacterAttack(c, world);
                     }
                 }
 
