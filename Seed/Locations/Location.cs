@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Seed.Characters;
+using Seed.Items;
 
-namespace Seed
+namespace Seed.Locations
 {
     public class Location
     {

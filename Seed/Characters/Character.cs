@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seed
+namespace Seed.Characters
 {
     public abstract class Character
     {
