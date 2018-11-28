@@ -5,6 +5,7 @@ using System.IO;
 using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
+using FluentAssertions;
 
 namespace Seed.Tests
 {
@@ -707,7 +708,7 @@ namespace Seed.Tests
             } while (player.Energy > 0);
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
-            List<string> RestSamples = new List<string>()
+            var RestSamples = new List<string>()
             {
                 "Drapiesz się po głowie.",
                 "Wzdychasz do siebie.",
@@ -721,10 +722,7 @@ namespace Seed.Tests
 
             player.Rest();
 
-            Assert.That(swr.ToString(), Contains.Substring("po głowie").Or.ContainsSubstring("do " +
-                "siebie").Or.ContainsSubstring("niespokojnie").Or.ContainsSubstring("sensem " +
-                "istnienia").Or.ContainsSubstring("szczurów").Or.ContainsSubstring("niebieskich " +
-                "migdałach").Or.ContainsSubstring("Puszczasz").Or.ContainsSubstring("Bekasz"));
+            swr.ToString().Should().ContainAny(RestSamples);
         }
 
         [Test]

@@ -57,62 +57,11 @@ namespace Seed.Tests
             Assert.That(location1.South.isOpen, Is.EqualTo(After));
         }
 
-        [TestCase(Direction.North, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.North, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.North, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.North, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.North, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.North, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.North, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.North, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.North, DoorState.Hidden, DoorState.Hidden)]
-        [TestCase(Direction.South, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.South, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.South, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.South, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.South, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.South, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.South, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.South, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.South, DoorState.Hidden, DoorState.Hidden)]
-        [TestCase(Direction.East, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.East, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.East, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.East, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.East, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.East, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.East, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.East, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.East, DoorState.Hidden, DoorState.Hidden)]
-        [TestCase(Direction.West, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.West, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.West, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.West, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.West, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.West, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.West, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.West, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.West, DoorState.Hidden, DoorState.Hidden)]
-        [TestCase(Direction.Up, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.Up, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.Up, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.Up, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.Up, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.Up, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.Up, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.Up, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.Up, DoorState.Hidden, DoorState.Hidden)]
-        [TestCase(Direction.Down, DoorState.Open, DoorState.Open)]
-        [TestCase(Direction.Down, DoorState.Open, DoorState.Closed)]
-        [TestCase(Direction.Down, DoorState.Open, DoorState.Hidden)]
-        [TestCase(Direction.Down, DoorState.Closed, DoorState.Open)]
-        [TestCase(Direction.Down, DoorState.Closed, DoorState.Closed)]
-        [TestCase(Direction.Down, DoorState.Closed, DoorState.Hidden)]
-        [TestCase(Direction.Down, DoorState.Hidden, DoorState.Open)]
-        [TestCase(Direction.Down, DoorState.Hidden, DoorState.Closed)]
-        [TestCase(Direction.Down, DoorState.Hidden, DoorState.Hidden)]
-        public void ShouldCreatePassageBetweenLocations(Direction targetLocationDirection,
-            DoorState fromHereDoorState, DoorState fromThereDoorState)
+        [Test]
+        public void ShouldCreatePassageBetweenLocations(
+            [Values]Direction targetLocationDirection,
+            [Values]DoorState fromHereDoorState, 
+            [Values]DoorState fromThereDoorState)
         {
             var location1 = new Location();
             var location2 = new Location();
