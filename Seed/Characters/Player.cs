@@ -469,7 +469,9 @@ namespace Seed.Characters
 
         public void Read(Book book)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Service.DisplayLongString("\n\"" + book.SomeLettersOnPaper + "\"\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public void Watch(Location location)
@@ -479,7 +481,35 @@ namespace Seed.Characters
 
         public void Watch(Character character)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Service.DisplayLongString("\n" + character.Overview + "\n");
+
+            Console.Write($"{character.Name} jest ");
+            if(character.HP==character.MaxHP)
+                Console.WriteLine("w pełni sił.");
+            else if(character.HP>0.75*character.MaxHP)
+                Console.WriteLine("lekko ranny.");
+            else if (character.HP>0.5*character.MaxHP)
+                Console.WriteLine("ciężko ranny.");
+            else
+                Console.WriteLine("umierający.");
+
+            Console.WriteLine();
+            var strengthDifference = character.Strength - this.Strength;
+
+            if(strengthDifference>=10)
+                Console.WriteLine("Nie masz szans w walce.");
+            else if(strengthDifference>=5)
+                Console.WriteLine("Jesteś wyraźnie słabszy.");
+            else if (strengthDifference>=2)
+                Console.WriteLine("Chyba masz jakieś szanse.");
+            else if(strengthDifference>=-2)
+                Console.WriteLine("Szanse w walce są wyrównane.");
+            else if(strengthDifference>=-5)
+                Console.WriteLine("Jesteś silniejszy.");
+            else
+                Console.WriteLine("Wygrasz jednym strzałem.");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public void Lookout()

@@ -38,9 +38,9 @@ namespace Seed
                 $"solidną porcją gazowanego, słodzonego rakotwórczym słodzikiem napoju. Nic więc dziwnego, " +
                 $"że od godziny majtasz wesoło nóżkami siedząc na porcelanowym tronie.");
             PressSomething();
-            DisplayLongString("Przed tobą przygoda. Może największa, a masz już za sobą większe. Tak czy inaczej," +
-                "jeśli poczujesz, że nie wiesz, co robić, możesz przeczytać wskazówki zapisane na tym świstku, " +
-                "który masz w kieszeni.");
+            DisplayLongString("Przed tobą przygoda. Może największa, a może masz już za sobą większe. Tak czy " +
+                "inaczej, jeśli poczujesz, że nie wiesz, co robić, możesz przeczytać wskazówki zapisane na tym " +
+                              "świstku, który masz w kieszeni.");
             DisplayLongString("No tak, ciekawe, skąd on się tam wziął... napisz: \"czytaj świstek\" i wszystko " +
                 "stanie się jasne.");
             Console.WriteLine("Powodzenia...");

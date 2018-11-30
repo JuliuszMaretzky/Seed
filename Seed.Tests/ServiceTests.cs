@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using FluentAssertions;
 using NUnit.Framework;
 using Seed.Characters;
 using Seed.Items;
@@ -321,12 +322,29 @@ namespace Seed.Tests
             var location = new Location();
             var human = new Human(presentLocation: location);
             var player = new Player(presentLocation: location);
+            var healthDescriptions = new List<string>()
+            {
+                "w pełni sił.",
+                "lekko ranny.",
+                "ciężko ranny.",
+                "umierający."
+            };
+            var compareStrengthDescriptions = new List<string>()
+            {
+                "Nie masz szans w walce.",
+                "Jesteś słabszy.",
+                "Szanse w walce są wyrównane.",
+                "Chyba masz jakieś szanse.",
+                "Jesteś silniejszy.",
+                "Wygrasz jednym strzałem."
+            };
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
 
             player.Watch(human);
 
-            Assert.That(swr.ToString(), Is.EqualTo("\r\n" + human.Overview + "\r\n\r\n"));
+            swr.ToString().Should().Contain(human.Overview).And.Contain(human.Name).And.ContainAny(healthDescriptions)
+                .And.ContainAny(compareStrengthDescriptions);
         }
 
         [Test]
