@@ -18,9 +18,10 @@ namespace Seed.Tests
             var location = new Location();
             var player = new Player(strength: playerStrength, armor: playerArmor, presentLocation: location);
             var human = new Human(strength: foeStrength, armor: foeArmor, presentLocation: location);
-            uint playerDamage, foeDamage;
+            
 
-            Battle.ComputeDamage(player, human, out playerDamage, out foeDamage);
+            var computedDamage=Battle.ComputeDamage(player, human);
+            uint playerDamage=computedDamage.Item1, foeDamage=computedDamage.Item2;
 
             Assert.That(playerDamage, Is.EqualTo(expectedPlayerDamage));
             Assert.That(foeDamage, Is.EqualTo(expectedFoeDamage));

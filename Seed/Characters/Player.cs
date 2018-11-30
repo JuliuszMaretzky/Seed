@@ -495,7 +495,7 @@ namespace Seed.Characters
                 Console.WriteLine("umierający.");
 
             Console.WriteLine();
-            var strengthDifference = character.Strength - this.Strength;
+            var strengthDifference = (int)character.Strength - (int)this.Strength;
 
             if(strengthDifference>=10)
                 Console.WriteLine("Nie masz szans w walce.");
