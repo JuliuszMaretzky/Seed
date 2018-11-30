@@ -135,31 +135,37 @@ namespace Seed.Scenarios
 
         public static Tuple<uint, uint> ComputeDamage(Character fighter1, Character fighter2)
         {
-            uint fighter1Damage, fighter2Damage;
+            int fighter1Damage, fighter2Damage;
 
             if (fighter1.Strength >= fighter2.Armor)
             {
-                fighter1Damage = (uint)(((fighter1.Strength - fighter2.Armor) * 0.05 + 1.00) *
+                fighter1Damage = (int)(((fighter1.Strength - fighter2.Armor) * 0.05 + 1.00) *
                     fighter1.Damage);
             }
             else
             {
-                fighter1Damage = (uint)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
+                fighter1Damage = (int)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
                     fighter1.Damage);
+
+                if (fighter1Damage <= 0)
+                    fighter1Damage = 1;
             }
 
             if (fighter2.Strength >= fighter1.Armor)
             {
-                fighter2Damage = (uint)(((fighter2.Strength - fighter1.Armor) * 0.05 + 1.00) *
+                fighter2Damage = (int)(((fighter2.Strength - fighter1.Armor) * 0.05 + 1.00) *
                     fighter2.Damage);
             }
             else
             {
-                fighter2Damage = (uint)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
+                fighter2Damage = (int)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
                     fighter2.Damage);
+
+                if (fighter2Damage <= 0)
+                    fighter2Damage = 1;
             }
 
-            return new Tuple<uint, uint>(fighter1Damage, fighter2Damage);
+            return new Tuple<uint, uint>((uint)fighter1Damage, (uint)fighter2Damage);
         }
 
         private static void CleanTheMess(Character defeated, World world)
