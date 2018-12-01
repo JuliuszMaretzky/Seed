@@ -89,7 +89,7 @@ namespace Seed.Characters
 
         public void Attack(Character character, World world)
         {
-            if (character.GetType() == typeof(Player))
+            if (character is Player)
             {
                 if (new Random().Next(0, 2) > 0)
                 {
@@ -99,6 +99,13 @@ namespace Seed.Characters
                 if (character.HP > 0)
                 {
                     Battle.Fight((Player)character, this, world);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine("NIE ŻYJESZ!");
+                    Console.Read();
+                    Environment.Exit(0);
                 }
 
             }
