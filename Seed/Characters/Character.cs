@@ -55,23 +55,31 @@ namespace Seed.Characters
 
         public void ReceiveItems(List<Item> items)
         {
-            uint addDamage = 0, addArmor = 0;
-            this.Inventory.AddRange(items);
-
-            foreach (var item in items)
+            if (this is Player)
             {
-                if (item.GetType() == typeof(Weapon))
-                {
-                    addDamage = GreaterDamage(addDamage, (Weapon)item);
-                }
-                else if (item.GetType() == typeof(Armor))
-                {
-                    addArmor = GreaterArmor(addArmor, (Armor)item);
-                }
+                throw new Exception("To nie jest metoda dla gracza!");
             }
+            else
+            {
+                uint addDamage = 0, addArmor = 0;
+                this.Inventory.AddRange(items);
 
-            this.Armor += addArmor;
-            this.Damage += addDamage;
+                foreach (var item in items)
+                {
+                    if (item is Weapon)
+                    {
+                        addDamage = GreaterDamage(addDamage, (Weapon)item);
+                    }
+                    else if (item is Armor)
+                    {
+                        addArmor = GreaterArmor(addArmor, (Armor)item);
+                    }
+                }
+
+                this.Armor += addArmor;
+                this.Damage += addDamage;
+            }
+            
         }
 
         private uint GreaterDamage(uint damage, Weapon item)

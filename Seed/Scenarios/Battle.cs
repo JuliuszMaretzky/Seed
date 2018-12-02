@@ -13,14 +13,16 @@ namespace Seed.Scenarios
 
         public static void Fight(Character attacker, Character defender, World world)
         {
-            uint attackerDamage, defenderDamage;
+            
             if (attacker.Strength >= 3 * defender.Armor)
             {
                 CleanTheMess(defender, world);
             }
             else
             {
-                ComputeDamage(attacker, defender, out attackerDamage, out defenderDamage);
+                var fightersDamage=ComputeDamage(attacker, defender);
+                uint attackerDamage=fightersDamage.Item1, defenderDamage=fightersDamage.Item2;
+
                 do
                 {
                     defender.HP -= (int)attackerDamage;
@@ -41,18 +43,18 @@ namespace Seed.Scenarios
 
         public static void Fight(Player player, Character foe, World world)
         {
-            Random r = new Random();
-            byte success;
             int foeStartFightHP = foe.HP, playerStartFightHP = player.HP;
-            uint playerDamage, foeDamage, dmgGiven;
-            ComputeDamage(player, foe, out playerDamage, out foeDamage);
+            var fightersDamage=ComputeDamage(player, foe);
+            uint playerDamage=fightersDamage.Item1, foeDamage=fightersDamage.Item2;
             do
             {
                 Service.DisplayStats(player);
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine($"{foe.Name} HP:{foe.HP}");
                 Console.ForegroundColor = ConsoleColor.White;
-                success = (byte)(r.Next(0, 10) % 3);
+                var r = new Random();
+                var success = (byte)(r.Next(0, 10) % 3);
+                uint dmgGiven;
 
                 if (success > 0)
                 {
@@ -131,30 +133,41 @@ namespace Seed.Scenarios
             }
         }
 
-        public static void ComputeDamage(Character fighter1, Character fighter2, out uint fighter1Damage,
-            out uint fighter2Damage)
+        public static Tuple<uint, uint> ComputeDamage(Character fighter1, Character fighter2)
         {
+            int fighter1Damage, fighter2Damage;
+
             if (fighter1.Strength >= fighter2.Armor)
             {
-                fighter1Damage = (uint)(((fighter1.Strength - fighter2.Armor) * 0.05 + 1.00) *
+                fighter1Damage = (int)(((fighter1.Strength - fighter2.Armor) * 0.05 + 1.00) *
                     fighter1.Damage);
             }
             else
             {
-                fighter1Damage = (uint)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
+                fighter1Damage = (int)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
                     fighter1.Damage);
+                if (fighter1Damage <= 0)
+                {
+                    fighter1Damage = 1;
+                }
             }
 
             if (fighter2.Strength >= fighter1.Armor)
             {
-                fighter2Damage = (uint)(((fighter2.Strength - fighter1.Armor) * 0.05 + 1.00) *
+                fighter2Damage = (int)(((fighter2.Strength - fighter1.Armor) * 0.05 + 1.00) *
                     fighter2.Damage);
             }
             else
             {
-                fighter2Damage = (uint)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
+                fighter2Damage = (int)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
                     fighter2.Damage);
+                if (fighter2Damage <= 0)
+                {
+                    fighter2Damage = 1;
+                }
             }
+
+            return new Tuple<uint, uint>((uint) fighter1Damage, (uint) fighter2Damage);
         }
 
         private static void CleanTheMess(Character defeated, World world)
