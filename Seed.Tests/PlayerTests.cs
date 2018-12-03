@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.IO;
+using Seed.Characters;
+using Seed.Items;
+using Seed.Locations;
+using FluentAssertions;
 
 namespace Seed.Tests
 {
@@ -704,7 +708,7 @@ namespace Seed.Tests
             } while (player.Energy > 0);
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
-            List<string> RestSamples = new List<string>()
+            var RestSamples = new List<string>()
             {
                 "Drapiesz się po głowie.",
                 "Wzdychasz do siebie.",
@@ -718,10 +722,7 @@ namespace Seed.Tests
 
             player.Rest();
 
-            Assert.That(swr.ToString(), Contains.Substring("po głowie").Or.ContainsSubstring("do " +
-                "siebie").Or.ContainsSubstring("niespokojnie").Or.ContainsSubstring("sensem " +
-                "istnienia").Or.ContainsSubstring("szczurów").Or.ContainsSubstring("niebieskich " +
-                "migdałach").Or.ContainsSubstring("Puszczasz").Or.ContainsSubstring("Bekasz"));
+            swr.ToString().Should().ContainAny(RestSamples);
         }
 
         [Test]
@@ -820,6 +821,50 @@ namespace Seed.Tests
                 "Na wschodzie\r\nAzjata jest blisko.\r\n" +
                 "Na zachodzie\r\n"));
             Assert.That(zyzyx.presentLocation, Is.EqualTo(prison));
+        }
+
+        [Test]
+        public void ShouldDisplayOverviewOfLocation()
+        {
+            var location = new Location();
+            var player = new Player(presentLocation: location);
+            StringWriter swr = new StringWriter();
+            Console.SetOut(swr);
+
+            player.Watch(location);
+
+            Assert.That(swr.ToString(), Is.EqualTo("\r\n" + location.Overview + "\r\n\r\n"));
+        }
+
+        [Test]
+        public void ShouldDisplayOverviewOfCharacter()
+        {
+            var location = new Location();
+            var human = new Human(presentLocation: location);
+            var player = new Player(presentLocation: location);
+            var healthDescriptions = new List<string>()
+            {
+                "w pełni sił.",
+                "lekko ranny.",
+                "ciężko ranny.",
+                "umierający."
+            };
+            var compareStrengthDescriptions = new List<string>()
+            {
+                "Nie masz szans w walce.",
+                "Jesteś słabszy.",
+                "Szanse w walce są wyrównane.",
+                "Chyba masz jakieś szanse.",
+                "Jesteś silniejszy.",
+                "Wygrasz jednym strzałem."
+            };
+            StringWriter swr = new StringWriter();
+            Console.SetOut(swr);
+
+            player.Watch(human);
+
+            swr.ToString().Should().Contain(human.Overview).And.Contain(human.Name).And.ContainAny(healthDescriptions)
+                .And.ContainAny(compareStrengthDescriptions);
         }
 
         [Test]

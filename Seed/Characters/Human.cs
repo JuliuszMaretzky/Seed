@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Seed.Locations;
+using Seed.Scenarios;
 
-namespace Seed
+namespace Seed.Characters
 {
     public class Human : Character, IMove, IAttack
     {

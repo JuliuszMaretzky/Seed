@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Seed.Characters;
+using Seed.Items;
+using Seed.Locations;
+using Seed.Scenarios;
 
 namespace Seed
 {
@@ -9,7 +13,7 @@ namespace Seed
     {
         public static void Navigate()
         {
-            Welcome(out string name);
+            string name=Welcome();
             World world = new World();
             Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
             Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
@@ -17,11 +21,11 @@ namespace Seed
             Command(player, world);
         }
 
-        private static void Welcome(out string name)
+        private static string Welcome()
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Podaj swe imię: ");
-            name = Console.ReadLine();
+            string name = Console.ReadLine();
             if (name == "")
             {
                 name = "Bezimienny";
@@ -34,14 +38,15 @@ namespace Seed
                 $"solidną porcją gazowanego, słodzonego rakotwórczym słodzikiem napoju. Nic więc dziwnego, " +
                 $"że od godziny majtasz wesoło nóżkami siedząc na porcelanowym tronie.");
             PressSomething();
-            DisplayLongString("Przed tobą przygoda. Może największa, a masz już za sobą większe. Tak czy inaczej," +
-                "jeśli poczujesz, że nie wiesz, co robić, możesz przeczytać wskazówki zapisane na tym świstku, " +
-                "który masz w kieszeni.");
+            DisplayLongString("Przed tobą przygoda. Może największa, a może masz już za sobą większe. Tak czy " +
+                "inaczej, jeśli poczujesz, że nie wiesz, co robić, możesz przeczytać wskazówki zapisane na tym " +
+                              "świstku, który masz w kieszeni.");
             DisplayLongString("No tak, ciekawe, skąd on się tam wziął... napisz: \"czytaj świstek\" i wszystko " +
                 "stanie się jasne.");
             Console.WriteLine("Powodzenia...");
             PressSomething();
             Console.ForegroundColor = ConsoleColor.Gray;
+            return name;
         }
 
         public static void DisplayLongString(string longstring)
@@ -143,17 +148,18 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        private static void GetCharacterMove(IMove Character)
+        private static void MoveCharacter(Character character)
         {
-            if (Character.IsLazy == false)
+            IMove movingChar = (IMove) character;
+            if (movingChar.IsLazy == false)
             {
-                Character.Move(Direction.Unknown);
+                movingChar.Move(Direction.Unknown);
             }
         }
         
-        private static void LetCharacterAttack(IAttack attacker, World world)
+        private static void LetCharacterAttack(Character character, World world)
         {
-            Character character = (Character)attacker;
+            IAttack attacker = (IAttack) character;
 
             if (attacker.IsAggressive == true)
             {
@@ -494,14 +500,14 @@ namespace Seed
 
                 foreach (var c in world.NPCs)
                 {
-                    if (typeof(IMove).IsAssignableFrom(c.GetType()))
+                    if (c is IMove)
                     {
-                        GetCharacterMove((IMove)c);
+                        MoveCharacter(c);
                     }
 
-                    if (typeof(IAttack).IsAssignableFrom(c.GetType()))
+                    if (c is IAttack)
                     {
-                        LetCharacterAttack((IAttack)c, world);
+                        LetCharacterAttack(c, world);
                     }
                 }
 
