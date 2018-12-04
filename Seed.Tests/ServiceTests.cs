@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using FluentAssertions;
 using NUnit.Framework;
 using Seed.Characters;
 using Seed.Items;
@@ -301,34 +302,7 @@ namespace Seed.Tests
             Assert.That(player.Inventory, Does.Contain(item));
             Assert.That(swr.ToString(), Is.EqualTo(expectedConsoleOutput));
         }
-
-        [Test]
-        public void ShouldDisplayOverviewOfLocation()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-            StringWriter swr = new StringWriter();
-            Console.SetOut(swr);
-
-            player.Watch(location);
-
-            Assert.That(swr.ToString(), Is.EqualTo("\r\n" + location.Overview + "\r\n\r\n"));
-        }
-
-        [Test]
-        public void ShouldDisplayOverviewOfCharacter()
-        {
-            var location = new Location();
-            var human = new Human(presentLocation: location);
-            var player = new Player(presentLocation: location);
-            StringWriter swr = new StringWriter();
-            Console.SetOut(swr);
-
-            player.Watch(human);
-
-            Assert.That(swr.ToString(), Is.EqualTo("\r\n" + human.Overview + "\r\n\r\n"));
-        }
-
+        
         [Test]
         public void ShouldDisplayProperCommentIfThereIsNoCharacterInLocationWhoseOverviewPlayerWantsToSee()
         {

@@ -13,7 +13,6 @@ namespace Seed.Scenarios
 
         public static void Fight(Character attacker, Character defender, World world)
         {
-            
             if (attacker.Strength >= 3 * defender.Armor)
             {
                 CleanTheMess(defender, world);
@@ -46,6 +45,7 @@ namespace Seed.Scenarios
             int foeStartFightHP = foe.HP, playerStartFightHP = player.HP;
             var fightersDamage=ComputeDamage(player, foe);
             uint playerDamage=fightersDamage.Item1, foeDamage=fightersDamage.Item2;
+
             do
             {
                 Service.DisplayStats(player);
@@ -146,6 +146,7 @@ namespace Seed.Scenarios
             {
                 fighter1Damage = (int)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
                     fighter1.Damage);
+              
                 if (fighter1Damage <= 0)
                 {
                     fighter1Damage = 1;
@@ -161,6 +162,7 @@ namespace Seed.Scenarios
             {
                 fighter2Damage = (int)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
                     fighter2.Damage);
+              
                 if (fighter2Damage <= 0)
                 {
                     fighter2Damage = 1;
