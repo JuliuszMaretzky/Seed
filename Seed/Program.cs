@@ -5,9 +5,6 @@
         static void Main(string[] args)
         {
             Service.Navigate();
-
         }
     }
-
-
 }
