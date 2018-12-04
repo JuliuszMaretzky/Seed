@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
 using Seed.Scenarios;
 using FluentAssertions;
-using Seed.Items;
 
 namespace Seed.Tests
 {
