@@ -13,15 +13,15 @@ namespace Seed.Scenarios
 
         public static void Fight(Character attacker, Character defender, World world)
         {
-
             if (attacker.Strength >= 3 * defender.Armor)
             {
                 CleanTheMess(defender, world);
             }
             else
             {
-                var computedDamage=ComputeDamage(attacker, defender);
-                uint attackerDamage=computedDamage.Item1, defenderDamage=computedDamage.Item2;
+                var fightersDamage=ComputeDamage(attacker, defender);
+                uint attackerDamage=fightersDamage.Item1, defenderDamage=fightersDamage.Item2;
+
                 do
                 {
                     defender.HP -= (int)attackerDamage;
@@ -42,11 +42,9 @@ namespace Seed.Scenarios
 
         public static void Fight(Player player, Character foe, World world)
         {
-            Random r = new Random();
-            byte success;
             int foeStartFightHP = foe.HP, playerStartFightHP = player.HP;
-            var computedDamage=ComputeDamage(player, foe);
-            uint playerDamage=computedDamage.Item1, foeDamage=computedDamage.Item2, dmgGiven;
+            var fightersDamage=ComputeDamage(player, foe);
+            uint playerDamage=fightersDamage.Item1, foeDamage=fightersDamage.Item2;
 
             do
             {
@@ -54,7 +52,9 @@ namespace Seed.Scenarios
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine($"{foe.Name} HP:{foe.HP}");
                 Console.ForegroundColor = ConsoleColor.White;
-                success = (byte)(r.Next(0, 10) % 3);
+                var r = new Random();
+                var success = (byte)(r.Next(0, 10) % 3);
+                uint dmgGiven;
 
                 if (success > 0)
                 {
@@ -146,9 +146,11 @@ namespace Seed.Scenarios
             {
                 fighter1Damage = (int)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
                     fighter1.Damage);
-
+              
                 if (fighter1Damage <= 0)
+                {
                     fighter1Damage = 1;
+                }
             }
 
             if (fighter2.Strength >= fighter1.Armor)
@@ -160,12 +162,14 @@ namespace Seed.Scenarios
             {
                 fighter2Damage = (int)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
                     fighter2.Damage);
-
+              
                 if (fighter2Damage <= 0)
+                {
                     fighter2Damage = 1;
+                }
             }
 
-            return new Tuple<uint, uint>((uint)fighter1Damage, (uint)fighter2Damage);
+            return new Tuple<uint, uint>((uint) fighter1Damage, (uint) fighter2Damage);
         }
 
         private static void CleanTheMess(Character defeated, World world)
