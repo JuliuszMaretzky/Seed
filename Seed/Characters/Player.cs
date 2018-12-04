@@ -293,13 +293,12 @@ namespace Seed.Characters
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (item.GetType() != typeof(Armor) && item.GetType() != typeof(Weapon) &&
-                item.GetType() != typeof(Bag))
+            if (!(item is Armor) && !(item is Weapon) && !(item is Bag))
             {
                 Console.WriteLine("Nie możesz tego na siebie założyć.");
                 return;
             }
-            else if (item.GetType() == typeof(Armor))
+            else if (item is Armor)
             {
                 string type = "";
                 foreach (var i in this.WornItems)
@@ -310,10 +309,10 @@ namespace Seed.Characters
                     }
                 this.IncreaseArmor((Armor)item);
             }
-            else if (item.GetType() == typeof(Bag))
+            else if (item is Bag)
             {
                 foreach (var i in this.WornItems)
-                    if (i.GetType() == typeof(Bag))
+                    if (i is Bag)
                     {
                         Console.WriteLine("Już masz na sobie torbę.");
                         return;
@@ -323,7 +322,7 @@ namespace Seed.Characters
             else
             {
                 foreach (var i in this.WornItems)
-                    if (i.GetType() == typeof(Weapon))
+                    if (i is Weapon)
                     {
                         Console.WriteLine("Już trzymasz broń.");
                         return;
@@ -389,7 +388,7 @@ namespace Seed.Characters
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (item.GetType() == typeof(Bag))
+            if (item is Bag)
             {
                 ReduceCarryingCapacity((Bag)item);
                 while (this.Burden > this.CarryingCapacity)
@@ -402,11 +401,11 @@ namespace Seed.Characters
                     this.PutAway(lighest);
                 }
             }
-            else if (item.GetType() == typeof(Armor))
+            else if (item is Armor)
             {
                 this.ReduceArmor((Armor)item);
             }
-            else if (item.GetType() == typeof(Weapon))
+            else if (item is Weapon)
             {
                 this.ReduceDamage((Weapon)item);
             }
