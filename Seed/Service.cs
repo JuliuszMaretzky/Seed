@@ -12,10 +12,10 @@ namespace Seed
     {
         public static void Navigate()
         {
-            string name=Welcome();
-            World world = new World();
-            Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
-            Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
+            var name=Welcome();
+            var world = new World();
+            var player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
+            var scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
             player.Inventory.Add(scrap);
             Command(player, world);
         }
@@ -24,7 +24,7 @@ namespace Seed
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Podaj swe imię: ");
-            string name = Console.ReadLine();
+            var name = Console.ReadLine();
             if (name == "")
             {
                 name = "Bezimienny";
@@ -50,8 +50,8 @@ namespace Seed
 
         public static void DisplayLongString(string longstring)
         {
-            string[] substrings = longstring.Split('\n');
-            for (int i = 0; i < substrings.Length; i++)
+            var substrings = longstring.Split('\n');
+            for (var i = 0; i < substrings.Length; i++)
             {
                 if (substrings[i].Length <= 80)
                 {
@@ -101,7 +101,7 @@ namespace Seed
         public static void DisplayDoors(Location location)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            string gates = "";
+            var gates = "";
 
             if (location.North.isOpen == DoorState.Open)
                 gates += "North ";
@@ -149,7 +149,7 @@ namespace Seed
 
         private static void MoveCharacter(Character character)
         {
-            IMove movingChar = (IMove) character;
+            var movingChar = (IMove) character;
             if (movingChar.IsLazy == false)
             {
                 movingChar.Move(Direction.Unknown);
@@ -158,7 +158,7 @@ namespace Seed
         
         private static void LetCharacterAttack(Character character, World world)
         {
-            IAttack attacker = (IAttack) character;
+            var attacker = (IAttack) character;
 
             if (attacker.IsAggressive == true)
             {
@@ -221,8 +221,8 @@ namespace Seed
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
 
-            bool isItemInList = false;
-            string itemName = "";
+            var isItemInList = false;
+            var itemName = "";
             if (command.Length == 1)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -285,7 +285,7 @@ namespace Seed
             }
             else
             {
-                string charName = "";
+                var charName = "";
                 if (command.Length == 2)
                 {
                     charName = command[1];
@@ -324,7 +324,7 @@ namespace Seed
             }
             else
             {
-                string charName = "";
+                var charName = "";
                 if (command.Length == 2)
                 {
                     charName = command[1];
@@ -390,7 +390,7 @@ namespace Seed
                 DisplayStats(player);
                 Console.WriteLine();
 
-                string[] command = Console.ReadLine().Split(' ');
+                var command = Console.ReadLine().Split(' ');
                 switch (command[0].ToLower())
                 {
                     case "north":
