@@ -101,17 +101,17 @@ namespace Seed
         {
             var gates = "";
 
-            if (location.North.isOpen == DoorState.Open)
+            if (location.North.IsOpen)
                 gates += "North ";
-            if (location.South.isOpen == DoorState.Open)
+            if (location.South.IsOpen)
                 gates += "South ";
-            if (location.East.isOpen == DoorState.Open)
+            if (location.East.IsOpen)
                 gates += "East ";
-            if (location.West.isOpen == DoorState.Open)
+            if (location.West.IsOpen)
                 gates += "West ";
-            if (location.Up.isOpen == DoorState.Open)
+            if (location.Up.IsOpen)
                 gates += "Up ";
-            if (location.Down.isOpen == DoorState.Open)
+            if (location.Down.IsOpen)
                 gates += "Down ";
 
             _pc.DarkYellow().Print(gates);
@@ -121,11 +121,11 @@ namespace Seed
         {
             Console.ForegroundColor = ConsoleColor.Red;
 
-            foreach (var c in Characters)
+            foreach (var character in Characters)
             {
-                if (c.GetType() != typeof(Player))
+                if (character is Player playerCharacter)
                 {
-                    DisplayLongString($"{c.Name} {c.Description}");
+                    DisplayLongString($"{playerCharacter.Name} {playerCharacter.Description}");
                 }
             }
 
@@ -146,10 +146,10 @@ namespace Seed
 
         private static void MoveCharacter(Character character)
         {
-            var movingChar = (IMove) character;
-            if (movingChar.IsLazy == false)
+            var movingCharacter = (IMove) character;
+            if (movingCharacter.IsLazy == false)
             {
-                movingChar.Move(Direction.Unknown);
+                movingCharacter.Move(Direction.Unknown);
             }
         }
         
@@ -157,13 +157,18 @@ namespace Seed
         {
             var attacker = (IAttack) character;
 
-            if (attacker.IsAggressive == true)
+            if (attacker.IsAggressive)
             {
                 foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && character.Strength >= 3 * defender.Armor && character != defender)
+                    var isAlive = defender.HP > 0;
+                    var requiredAttackerStrength = 3 * defender.Armor;
+                    var isStrongEnough = character.Strength >= requiredAttackerStrength;
+                    var isAttacker = character != defender;
+
+                    if (isAlive && isStrongEnough && isAttacker)
                     {
-                        attacker.Attack(defender, world);
+                        attacker.Attack(defender, world); //TODO PM: why are you passing world here, seems wrong
                         break;
                     }
 
@@ -171,7 +176,10 @@ namespace Seed
 
                 foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
-                    if (defender.HP > 0 && character != defender)
+                    var isAlive = defender.HP > 0;
+                    var isAttacker = character != defender;
+
+                    if (isAlive && isAttacker)
                     {
                         attacker.Attack(defender, world);
                         break;
