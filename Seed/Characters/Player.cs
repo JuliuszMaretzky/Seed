@@ -595,21 +595,22 @@ namespace Seed.Characters
             Console.WriteLine();
         }
 
-        public void Attack(Character character, World world)
+        public void Attack(Character character)
         {
             character.HP -= (int)(this.Strength - character.Armor);
 
             if (character.HP > 0)
             {
-                Battle.Fight(this, character, world);
+                Battle.Fight(this, character);
             }
             else
             {
                 Console.WriteLine($"Zabiłeś {character.Name}!");
-                character.presentLocation.Stack.AddRange(character.Inventory);
-                character.Inventory.Clear();
-                character.presentLocation.CharactersInLocation.Remove(character);
-                world.NPCs.Remove(character);
+                Battle.CleanTheMess(character);
+                //character.presentLocation.Stack.AddRange(character.Inventory);
+                //character.Inventory.Clear();
+                //character.presentLocation.CharactersInLocation.Remove(character);
+                //world.NPCs.Remove(character);
             }
 
         }

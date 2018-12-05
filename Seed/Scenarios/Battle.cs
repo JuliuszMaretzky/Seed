@@ -11,11 +11,11 @@ namespace Seed.Scenarios
     {
         public static List<Character> Garbage = new List<Character>();
 
-        public static void Fight(Character attacker, Character defender, World world)
+        public static void Fight(Character attacker, Character defender)
         {
             if (attacker.Strength >= 3 * defender.Armor)
             {
-                CleanTheMess(defender, world);
+                CleanTheMess(defender);
             }
             else
             {
@@ -31,16 +31,16 @@ namespace Seed.Scenarios
 
             if (attacker.HP == 0)
             {
-                CleanTheMess(attacker, world);
+                CleanTheMess(attacker);
             }
             if (defender.HP == 0)
             {
-                CleanTheMess(attacker, world);
+                CleanTheMess(attacker);
             }
 
         }
 
-        public static void Fight(Player player, Character foe, World world)
+        public static void Fight(Player player, Character foe)
         {
             int foeStartFightHP = foe.HP, playerStartFightHP = player.HP;
             var fightersDamage=ComputeDamage(player, foe);
@@ -129,7 +129,7 @@ namespace Seed.Scenarios
             else
             {
                 Console.WriteLine($"Zabiłeś {foe.Name}!");
-                CleanTheMess(foe, world);
+                CleanTheMess(foe);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Seed.Scenarios
             return new Tuple<uint, uint>((uint) fighter1Damage, (uint) fighter2Damage);
         }
 
-        private static void CleanTheMess(Character defeated, World world)
+        public static void CleanTheMess(Character defeated)
         {
             defeated.presentLocation.Stack.AddRange(defeated.Inventory);
             defeated.Inventory.Clear();

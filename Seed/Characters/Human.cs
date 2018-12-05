@@ -87,7 +87,7 @@ namespace Seed.Characters
             }
         }
 
-        public void Attack(Character character, World world)
+        public void Attack(Character character)
         {
             if (character is Player)
             {
@@ -98,7 +98,7 @@ namespace Seed.Characters
 
                 if (character.HP > 0)
                 {
-                    Battle.Fight((Player)character, this, world);
+                    Battle.Fight((Player)character, this);
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace Seed.Characters
             }
             else
             {
-                Battle.Fight(this, character, world);
+                Battle.Fight(this, character);
             }
         }
 

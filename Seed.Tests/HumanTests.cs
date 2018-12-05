@@ -6,6 +6,7 @@ using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
 using FluentAssertions;
+using Seed.Scenarios;
 
 namespace Seed.Tests
 {
@@ -55,6 +56,23 @@ namespace Seed.Tests
             human.Move(parentDirection);
             
             human.presentLocation.Should().Be(location2);
+        }
+
+        [Test]
+        [Category("Human.Attack")]
+        public void DefenderShouldBeDeadIfHumanAttacksHumanAndHasAtLeast3TimesMoreStrengthThanDefendersArmor()
+        {
+            var world=new World();
+            var location = new Location();
+            var attacker = new Human(name:"Attacker", strength:30,presentLocation: location);
+            var defender=new Human(name:"Defender", armor:10,presentLocation:location);
+            world.Locations.Add(location);
+            world.NPCs.Add(attacker);
+            world.NPCs.Add(defender);
+
+            attacker.Attack(defender);
+
+            Battle.Garbage.Should().Contain(defender);
         }
     }
 }

@@ -167,7 +167,7 @@ namespace Seed
                 {
                     if (defender.HP > 0 && character.Strength >= 3 * defender.Armor && character != defender)
                     {
-                        attacker.Attack(defender, world);
+                        attacker.Attack(defender);
                         break;
                     }
 
@@ -177,7 +177,7 @@ namespace Seed
                 {
                     if (defender.HP > 0 && character != defender)
                     {
-                        attacker.Attack(defender, world);
+                        attacker.Attack(defender);
                         break;
                     }
                 }
@@ -343,7 +343,7 @@ namespace Seed
                 if (_wantedChar.Any())
                 {
                     var wantedChar = _wantedChar.First();
-                    player.Attack(wantedChar, world);
+                    player.Attack(wantedChar);
                 }
                 else
                 {
