@@ -25,7 +25,7 @@ namespace Seed.Tests
             uint foeJacketToughness, uint expectedPlayerDamage, uint expectedFoeDamage)
         {
             var location = new Location();
-            var playerWeapon=new Weapon(damage:playerWeaponDamage);
+            var playerWeapon = new Weapon(damage: playerWeaponDamage);
             var playerJacket = new Armor(toughness: playerJacketToughness);
             var foeItemList = new List<Item>()
             {
@@ -39,9 +39,9 @@ namespace Seed.Tests
             player.Wear(playerJacket);
             var human = new Human(strength: foeStrength, armor: foeArmor, presentLocation: location);
             human.ReceiveItems(foeItemList);
-            
-            var computedDamage=Battle.ComputeDamage(player, human);
-            uint playerDamage=computedDamage.Item1, foeDamage=computedDamage.Item2;
+
+            var computedDamage = Battle.ComputeDamage(player, human);
+            uint playerDamage = computedDamage.Item1, foeDamage = computedDamage.Item2;
 
             playerDamage.Should().Be(expectedPlayerDamage);
             foeDamage.Should().Be(expectedFoeDamage);

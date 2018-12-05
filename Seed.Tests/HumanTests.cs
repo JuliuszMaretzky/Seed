@@ -54,17 +54,19 @@ namespace Seed.Tests
             var human = new Human("Zenon", hp: 5, strength: 3, presentLocation: location2);
 
             human.Move(parentDirection);
-            
+
             human.presentLocation.Should().Be(location2);
         }
 
-        [Test]
+        [TestCase((uint)10)]
+        [TestCase((uint)5)]
         [Category("Human.Attack")]
-        public void DefenderShouldBeDeadIfHumanAttacksHumanAndHasAtLeast3TimesMoreStrengthThanDefendersArmor()
+        public void DefenderShouldBeDeadIfHumanAttacksHumanAndHasAtLeast3TimesMoreStrengthThanDefendersArmor(
+            uint defenderArmor)
         {
             var location = new Location();
-            var attacker = new Human(strength:30,presentLocation: location);
-            var defender=new Human(armor:10,presentLocation:location);
+            var attacker = new Human(strength: 30, presentLocation: location);
+            var defender = new Human(armor: defenderArmor, presentLocation: location);
 
             attacker.Attack(defender);
 

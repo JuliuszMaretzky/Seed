@@ -53,12 +53,12 @@ namespace Seed.Tests
             DoorState eastState, DoorState westState, DoorState upState, DoorState downState, string expected)
         {
             var location = new Location();
-            location.ChancheDoorState(Direction.North, northState);
-            location.ChancheDoorState(Direction.South, southState);
-            location.ChancheDoorState(Direction.East, eastState);
-            location.ChancheDoorState(Direction.West, westState);
-            location.ChancheDoorState(Direction.Up, upState);
-            location.ChancheDoorState(Direction.Down, downState);
+            location.ChangeDoorState(Direction.North, northState);
+            location.ChangeDoorState(Direction.South, southState);
+            location.ChangeDoorState(Direction.East, eastState);
+            location.ChangeDoorState(Direction.West, westState);
+            location.ChangeDoorState(Direction.Up, upState);
+            location.ChangeDoorState(Direction.Down, downState);
             var player = new Player(presentLocation: location);
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
@@ -316,7 +316,7 @@ namespace Seed.Tests
             player.Inventory.Should().Contain(item);
             swr.ToString().Should().Be(expectedConsoleOutput);
         }
-        
+
         [Test]
         [Category("Service.Watch")]
         public void ShouldDisplayProperCommentIfThereIsNoCharacterInLocationWhoseOverviewPlayerWantsToSee()

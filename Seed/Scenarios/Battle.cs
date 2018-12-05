@@ -19,8 +19,8 @@ namespace Seed.Scenarios
             }
             else
             {
-                var fightersDamage=ComputeDamage(attacker, defender);
-                uint attackerDamage=fightersDamage.Item1, defenderDamage=fightersDamage.Item2;
+                var fightersDamage = ComputeDamage(attacker, defender);
+                uint attackerDamage = fightersDamage.Item1, defenderDamage = fightersDamage.Item2;
 
                 do
                 {
@@ -43,8 +43,8 @@ namespace Seed.Scenarios
         public static void Fight(Player player, Character foe)
         {
             int foeStartFightHP = foe.HP, playerStartFightHP = player.HP;
-            var fightersDamage=ComputeDamage(player, foe);
-            uint playerDamage=fightersDamage.Item1, foeDamage=fightersDamage.Item2;
+            var fightersDamage = ComputeDamage(player, foe);
+            uint playerDamage = fightersDamage.Item1, foeDamage = fightersDamage.Item2;
 
             do
             {
@@ -146,7 +146,7 @@ namespace Seed.Scenarios
             {
                 fighter1Damage = (int)((1.00 - ((fighter2.Armor - fighter1.Strength) * 0.025)) *
                     fighter1.Damage);
-              
+
                 if (fighter1Damage <= 0)
                 {
                     fighter1Damage = 1;
@@ -162,14 +162,14 @@ namespace Seed.Scenarios
             {
                 fighter2Damage = (int)((1.00 - ((fighter1.Armor - fighter2.Strength) * 0.025)) *
                     fighter2.Damage);
-              
+
                 if (fighter2Damage <= 0)
                 {
                     fighter2Damage = 1;
                 }
             }
 
-            return new Tuple<uint, uint>((uint) fighter1Damage, (uint) fighter2Damage);
+            return new Tuple<uint, uint>((uint)fighter1Damage, (uint)fighter2Damage);
         }
 
         public static void CleanTheMess(Character defeated)

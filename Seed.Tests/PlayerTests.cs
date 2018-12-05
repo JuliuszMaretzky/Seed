@@ -6,6 +6,7 @@ using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
 using FluentAssertions;
+using Seed.Scenarios;
 
 namespace Seed.Tests
 {
@@ -28,7 +29,7 @@ namespace Seed.Tests
             player.MaxEnergy.Should().Be(player.Energy);
             player.presentLocation.Should().Be(location);
         }
-        
+
         [Test]
         [Category("Player.Properties")]
         public void ShouldHaveNotHPLessThanZero()
@@ -69,7 +70,7 @@ namespace Seed.Tests
 
             player.Energy.Should().BeGreaterOrEqualTo(0);
         }
-        
+
         [TestCase(Direction.North, Direction.South)]
         [TestCase(Direction.South, Direction.North)]
         [TestCase(Direction.East, Direction.West)]
@@ -141,7 +142,7 @@ namespace Seed.Tests
             player.Move(moveDirection);
 
             player.presentLocation.Should().Be(location1);
-            swr.ToString().Should().Be("Nie możesz tam iść\r\n");
+            swr.ToString().Should().Be("Nie możesz tam iść.\r\n");
         }
 
         [TestCase(DoorState.Hidden, Direction.North, Direction.South)]
@@ -163,7 +164,7 @@ namespace Seed.Tests
         [TestCase(DoorState.Closed, Direction.Down, Direction.Up)]
         [TestCase(DoorState.Open, Direction.Down, Direction.Up)]
         [Category("Player.Move")]
-        public void ShouldMoveWhenDoorIsHidden(DoorState fromHere, Direction parentDirection, 
+        public void ShouldMoveWhenDoorIsHidden(DoorState fromHere, Direction parentDirection,
             Direction moveDirection)
         {
             var location1 = new Location();
@@ -259,7 +260,7 @@ namespace Seed.Tests
         public void ShouldNotHaveAnItemInInventoryAfterWear()
         {
             var location = new Location();
-            var player = new Player(presentLocation:location);
+            var player = new Player(presentLocation: location);
             var item = new Weapon(location: location);
             player.PickUp(item);
 
@@ -728,7 +729,7 @@ namespace Seed.Tests
         public void ShouldBeAbleToSeeCharactersInASmallDistance()
         {
             var prison = new Location();
-            var zyzyx = new Player(presentLocation:prison);
+            var zyzyx = new Player(presentLocation: prison);
             var location1 = new Location();
             var location2 = new Location(parentDirection: Direction.South, parentLocation: location1);
             var location3 = new Location(parentDirection: Direction.South, parentLocation: location2);
@@ -742,7 +743,7 @@ namespace Seed.Tests
             var location11 = new Location(parentDirection: Direction.East, parentLocation: location1);
             var location12 = new Location(parentDirection: Direction.East, parentLocation: location11);
             var location13 = new Location(parentDirection: Direction.East, parentLocation: location12);
-            var player = new Player(presentLocation: location1, familiarSpirit:zyzyx);
+            var player = new Player(presentLocation: location1, familiarSpirit: zyzyx);
             var human1 = new Human("Azjata", presentLocation: location8);
             var human2 = new Human("Wiking", presentLocation: location3);
             var human3 = new Human("Americano", presentLocation: location13);
@@ -909,6 +910,35 @@ namespace Seed.Tests
             player.Drink(water);
 
             player.Energy.Should().Be(player.MaxEnergy);
+        }
+
+        [TestCase(40)]
+        [TestCase(30)]
+        [Category("Player.Attack")]
+        public void DefenderShouldBeDeadIfPlayerHasStrengthLargerOrEqualToSumOfDefendersArmorAndHP(int defenderHP)
+        {
+            var location = new Location();
+            var player = new Player(strength: 50, presentLocation: location);
+            var defender = new Human(armor: 10, hp: defenderHP, presentLocation: location);
+
+            player.Attack(defender);
+
+            Battle.Garbage.Should().Contain(defender);
+        }
+
+        [Test]
+        [Category("Player.Move")]
+        public void ShouldNotMoveIfTargetLocationIsNull([Values]Direction moveDirection)
+        {
+            var location = new Location();
+            location.ChangeDoorState(moveDirection, DoorState.Open);
+            var player=new Player(presentLocation:location);
+            StringWriter swr=new StringWriter();
+            Console.SetOut(swr);
+
+            player.Move(moveDirection);
+
+            swr.ToString().Should().Be("Nie możesz tam iść.\r\n");
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Seed.Tests
         {
             var location = new Location();
             var player = new Player(presentLocation: location);
-            
+
             Action act = () => player.ReceiveItems(new List<Item>());
 
             act.Should().Throw<Exception>().WithMessage("To nie jest metoda dla gracza!");

@@ -55,7 +55,7 @@ namespace Seed.Tests
             Location location2 = new Location(parentDirection: Direction.North, parentLocation: location1,
                 fromParentDoorState: Before);
 
-            location1.ChancheDoorState(Direction.South, After);
+            location1.ChangeDoorState(Direction.South, After);
 
             location1.South.isOpen.Should().Be(After);
         }
