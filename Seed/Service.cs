@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
@@ -10,6 +11,8 @@ namespace Seed
 {
     public class Service
     {
+        private static readonly ProConsole _pc = new ProConsole();
+
         public static void Navigate()
         {
             var name=Welcome();
@@ -22,17 +25,15 @@ namespace Seed
 
         private static string Welcome()
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Podaj swe imię: ");
-            var name = Console.ReadLine();
-            if (name == "")
-            {
-                name = "Bezimienny";
-            }
+            _pc.White().Print("Podaj swe imię: ");
+
+            var characterName = _pc.ReadLine();
+            characterName = string.IsNullOrEmpty(characterName) ? "Bezimienny" : characterName;
+
             DisplayLongString("Jeśli nie jesteś facetem, to... no, już nim jesteś. Bardzo mi przykro " +
                 "(a tak naprawdę, to nie).");
             PressSomething();
-            DisplayLongString($"Otóż, drogi {name}, sytuacja wygląda tak..." +
+            DisplayLongString($"Otóż, drogi {characterName}, sytuacja wygląda tak..." +
                 $"Napchałeś się jakichś dziwnych, tanich chipsów z pobliskiego spożywczaka, i popiłeś " +
                 $"solidną porcją gazowanego, słodzonego rakotwórczym słodzikiem napoju. Nic więc dziwnego, " +
                 $"że od godziny majtasz wesoło nóżkami siedząc na porcelanowym tronie.");
@@ -42,10 +43,10 @@ namespace Seed
                               "świstku, który masz w kieszeni.");
             DisplayLongString("No tak, ciekawe, skąd on się tam wziął... napisz: \"czytaj świstek\" i wszystko " +
                 "stanie się jasne.");
-            Console.WriteLine("Powodzenia...");
+            _pc.Print("Powodzenia...");
             PressSomething();
-            Console.ForegroundColor = ConsoleColor.Gray;
-            return name;
+
+            return characterName;
         }
 
         public static void DisplayLongString(string longstring)
@@ -93,14 +94,11 @@ namespace Seed
 
         public static void DisplayStats(Player player)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine($"\n<HP: {player.HP} EN: {player.Energy}>");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            _pc.DarkCyan().Print($"\n<HP: {player.HP} EN: {player.Energy}>");
         }
 
         public static void DisplayDoors(Location location)
         {
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
             var gates = "";
 
             if (location.North.isOpen == DoorState.Open)
@@ -116,8 +114,7 @@ namespace Seed
             if (location.Down.isOpen == DoorState.Open)
                 gates += "Down ";
 
-            Console.WriteLine(gates);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            _pc.DarkYellow().Print(gates);
         }
 
         public static void DisplayNPCsInLocation(List<Character> Characters)
