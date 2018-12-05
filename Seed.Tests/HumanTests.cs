@@ -62,13 +62,9 @@ namespace Seed.Tests
         [Category("Human.Attack")]
         public void DefenderShouldBeDeadIfHumanAttacksHumanAndHasAtLeast3TimesMoreStrengthThanDefendersArmor()
         {
-            var world=new World();
             var location = new Location();
-            var attacker = new Human(name:"Attacker", strength:30,presentLocation: location);
-            var defender=new Human(name:"Defender", armor:10,presentLocation:location);
-            world.Locations.Add(location);
-            world.NPCs.Add(attacker);
-            world.NPCs.Add(defender);
+            var attacker = new Human(strength:30,presentLocation: location);
+            var defender=new Human(armor:10,presentLocation:location);
 
             attacker.Attack(defender);
 

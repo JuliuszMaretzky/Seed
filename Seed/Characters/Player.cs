@@ -607,10 +607,6 @@ namespace Seed.Characters
             {
                 Console.WriteLine($"Zabiłeś {character.Name}!");
                 Battle.CleanTheMess(character);
-                //character.presentLocation.Stack.AddRange(character.Inventory);
-                //character.Inventory.Clear();
-                //character.presentLocation.CharactersInLocation.Remove(character);
-                //world.NPCs.Remove(character);
             }
 
         }
