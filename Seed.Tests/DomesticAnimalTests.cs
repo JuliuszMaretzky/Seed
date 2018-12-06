@@ -128,5 +128,37 @@ namespace Seed.Tests
 
             animal.IsFollowing.Should().Be(false);
         }
+
+        [Test]
+        [Category("DomesticAnimal.ThinkAboutFollowing")]
+        public void ShouldNotFollowDeadCharacter()
+        {
+            var location = new Location();
+            var slug=new DomesticAnimal(presentLocation:location);
+            var corpse=new Human(hp:0, presentLocation:location);
+
+            slug.ThinkAboutFollowing();
+
+            slug.IsFollowing.Should().Be(false);
+            slug.FollowedCharacter.Should().BeNull();
+            slug.StepsRemaining.Should().Be(0);
+        }
+
+        [Test]
+        [Category("DomesticAnimal.Follow")]
+        public void ShouldStopFollowIfFollowedCharacterDied()
+        {
+            var location=new Location();
+            var hamster=new DomesticAnimal(presentLocation:location);
+            var almostDeadMan = new Human(presentLocation:location);
+            hamster.ThinkAboutFollowing();
+            almostDeadMan.HP = 0;
+
+            hamster.Follow();
+
+            hamster.IsFollowing.Should().Be(false);
+            hamster.FollowedCharacter.Should().BeNull();
+            hamster.StepsRemaining.Should().Be(0);
+        }
     }
 }

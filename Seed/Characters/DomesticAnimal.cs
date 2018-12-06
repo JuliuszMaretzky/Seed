@@ -21,21 +21,27 @@ namespace Seed.Characters
 
         public void ThinkAboutFollowing()
         {
-            presentLocation.CharactersInLocation.Remove(this);
-
-            if (presentLocation.CharactersInLocation.Count > 0)
+            if (presentLocation.CharactersInLocation.Count > 1)
             {
-                var chooseFollowedCharacter = new Random().Next(presentLocation.CharactersInLocation.Count);
-                FollowedCharacter = presentLocation.CharactersInLocation[chooseFollowedCharacter];
-                IsFollowing = true;
-                StepsRemaining = (uint)(new Random().Next(10) + 1);
+                foreach (var character in presentLocation.CharactersInLocation)
+                {
+                    if (character == this || character.HP == 0) continue;
+                    FollowedCharacter = character;
+                    IsFollowing = true;
+                    StepsRemaining = (uint) (new Random().Next(10) + 1);
+                }
             }
-
-            presentLocation.CharactersInLocation.Add(this);
         }
 
         public void Follow()
         {
+            if (FollowedCharacter.HP == 0)
+            {
+                IsFollowing = false;
+                StepsRemaining = 0;
+                FollowedCharacter = null;
+                return;
+            }
             if (CanFollowFollowedCharacter(presentLocation.North, FollowedCharacter.presentLocation) ||
                 CanFollowFollowedCharacter(presentLocation.South, FollowedCharacter.presentLocation) ||
                 CanFollowFollowedCharacter(presentLocation.East, FollowedCharacter.presentLocation) ||
