@@ -35,50 +35,50 @@ namespace Seed.Characters
             switch (direction)
             {
                 case Direction.North:
-                    if (presentLocation.North.isOpen == DoorState.Open)
+                    if (presentLocation.North.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.North.location;
+                        this.presentLocation = presentLocation.North.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.South:
-                    if (presentLocation.South.isOpen == DoorState.Open)
+                    if (presentLocation.South.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.South.location;
+                        this.presentLocation = presentLocation.South.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.East:
-                    if (presentLocation.East.isOpen == DoorState.Open)
+                    if (presentLocation.East.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.East.location;
+                        this.presentLocation = presentLocation.East.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.West:
-                    if (presentLocation.West.isOpen == DoorState.Open)
+                    if (presentLocation.West.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.West.location;
+                        this.presentLocation = presentLocation.West.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.Up:
-                    if (presentLocation.Up.isOpen == DoorState.Open)
+                    if (presentLocation.Up.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Up.location;
+                        this.presentLocation = presentLocation.Up.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.Down:
-                    if (presentLocation.Down.isOpen == DoorState.Open)
+                    if (presentLocation.Down.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Down.location;
+                        this.presentLocation = presentLocation.Down.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;

@@ -104,17 +104,17 @@ namespace Seed
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             string gates = "";
 
-            if (location.North.isOpen == DoorState.Open)
+            if (location.North.DoorState == DoorState.Open)
                 gates += "North ";
-            if (location.South.isOpen == DoorState.Open)
+            if (location.South.DoorState == DoorState.Open)
                 gates += "South ";
-            if (location.East.isOpen == DoorState.Open)
+            if (location.East.DoorState == DoorState.Open)
                 gates += "East ";
-            if (location.West.isOpen == DoorState.Open)
+            if (location.West.DoorState == DoorState.Open)
                 gates += "West ";
-            if (location.Up.isOpen == DoorState.Open)
+            if (location.Up.DoorState == DoorState.Open)
                 gates += "Up ";
-            if (location.Down.isOpen == DoorState.Open)
+            if (location.Down.DoorState == DoorState.Open)
                 gates += "Down ";
 
             Console.WriteLine(gates);
@@ -150,18 +150,31 @@ namespace Seed
 
         private static void MoveCharacter(Character character)
         {
-            IMove movingChar = (IMove)character;
-            if (movingChar.IsLazy == false)
+            var movingCharacter = (IMove)character;
+            if (movingCharacter.IsLazy == false)
             {
-                movingChar.Move(Direction.Unknown);
+                movingCharacter.Move(Direction.Unknown);
             }
         }
 
-        private static void LetCharacterAttack(Character character, World world)
+        private static void LetCharacterFollow(Character character)
         {
-            IAttack attacker = (IAttack)character;
+            var follower = (IFollow) character;
+            if (follower.IsFollowing)
+            {
+                follower.Follow();
+            }
+            else
+            {
+                follower.ThinkAboutFollowing();
+            }
+        }
 
-            if (attacker.IsAggressive == true)
+        private static void LetCharacterAttack(Character character)
+        {
+            var attacker = (IAttack)character;
+
+            if (attacker.IsAggressive)
             {
                 foreach (var defender in character.presentLocation.CharactersInLocation)
                 {
@@ -505,9 +518,14 @@ namespace Seed
                         MoveCharacter(c);
                     }
 
+                    if (c is IFollow)
+                    {
+                        LetCharacterFollow(c);
+                    }
+
                     if (c is IAttack)
                     {
-                        LetCharacterAttack(c, world);
+                        LetCharacterAttack(c);
                     }
                 }
 

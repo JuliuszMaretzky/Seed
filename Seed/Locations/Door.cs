@@ -6,13 +6,13 @@ namespace Seed.Locations
 {
     public struct Door
     {
-        public readonly DoorState isOpen;
-        public readonly Location location;
+        public readonly DoorState DoorState;
+        public readonly Location Location;
 
         public Door(DoorState state, Location location)
         {
-            this.isOpen = state;
-            this.location = location;
+            this.DoorState = state;
+            this.Location = location;
         }
 
     }

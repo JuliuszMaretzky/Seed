@@ -35,7 +35,7 @@ namespace Seed.Scenarios
             }
             if (defender.HP == 0)
             {
-                CleanTheMess(attacker);
+                CleanTheMess(defender);
             }
 
         }

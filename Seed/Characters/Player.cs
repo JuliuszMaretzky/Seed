@@ -87,11 +87,11 @@ namespace Seed.Characters
             {
                 case Direction.North:
                     {
-                        if (this.presentLocation.North.isOpen != DoorState.Closed &&
-                            this.presentLocation.North.location!=null)
+                        if (this.presentLocation.North.DoorState != DoorState.Closed &&
+                            this.presentLocation.North.Location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.North.location;
+                            this.presentLocation = this.presentLocation.North.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -102,11 +102,11 @@ namespace Seed.Characters
                     break;
                 case Direction.South:
                     {
-                        if (this.presentLocation.South.isOpen != DoorState.Closed &&
-                            this.presentLocation.South.location != null)
+                        if (this.presentLocation.South.DoorState != DoorState.Closed &&
+                            this.presentLocation.South.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.South.location;
+                            this.presentLocation = this.presentLocation.South.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -117,11 +117,11 @@ namespace Seed.Characters
                     break;
                 case Direction.East:
                     {
-                        if (this.presentLocation.East.isOpen != DoorState.Closed && 
-                            this.presentLocation.East.location!=null)
+                        if (this.presentLocation.East.DoorState != DoorState.Closed && 
+                            this.presentLocation.East.Location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.East.location;
+                            this.presentLocation = this.presentLocation.East.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -132,11 +132,11 @@ namespace Seed.Characters
                     break;
                 case Direction.West:
                     {
-                        if (this.presentLocation.West.isOpen != DoorState.Closed &&
-                            this.presentLocation.West.location != null)
+                        if (this.presentLocation.West.DoorState != DoorState.Closed &&
+                            this.presentLocation.West.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.West.location;
+                            this.presentLocation = this.presentLocation.West.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -147,11 +147,11 @@ namespace Seed.Characters
                     break;
                 case Direction.Up:
                     {
-                        if (this.presentLocation.Up.isOpen != DoorState.Closed &&
-                            this.presentLocation.Up.location != null)
+                        if (this.presentLocation.Up.DoorState != DoorState.Closed &&
+                            this.presentLocation.Up.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.Up.location;
+                            this.presentLocation = this.presentLocation.Up.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -162,11 +162,11 @@ namespace Seed.Characters
                     break;
                 case Direction.Down:
                     {
-                        if (this.presentLocation.Down.isOpen != DoorState.Closed &&
-                            this.presentLocation.Down.location != null)
+                        if (this.presentLocation.Down.DoorState != DoorState.Closed &&
+                            this.presentLocation.Down.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.Down.location;
+                            this.presentLocation = this.presentLocation.Down.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -190,9 +190,9 @@ namespace Seed.Characters
             {
                 case Direction.North:
                     {
-                        if (this.presentLocation.North.isOpen == DoorState.Open)
+                        if (this.presentLocation.North.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.North.location;
+                            this.presentLocation = this.presentLocation.North.Location;
                             return true;
                         }
                         else
@@ -203,9 +203,9 @@ namespace Seed.Characters
                     }
                 case Direction.South:
                     {
-                        if (this.presentLocation.South.isOpen == DoorState.Open)
+                        if (this.presentLocation.South.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.South.location;
+                            this.presentLocation = this.presentLocation.South.Location;
                             return true;
                         }
                         else
@@ -216,9 +216,9 @@ namespace Seed.Characters
                     }
                 case Direction.East:
                     {
-                        if (this.presentLocation.East.isOpen == DoorState.Open)
+                        if (this.presentLocation.East.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.East.location;
+                            this.presentLocation = this.presentLocation.East.Location;
                             return true;
                         }
                         else
@@ -229,9 +229,9 @@ namespace Seed.Characters
                     }
                 case Direction.West:
                     {
-                        if (this.presentLocation.West.isOpen == DoorState.Open)
+                        if (this.presentLocation.West.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.West.location;
+                            this.presentLocation = this.presentLocation.West.Location;
                             return true;
                         }
                         else
@@ -242,9 +242,9 @@ namespace Seed.Characters
                     }
                 case Direction.Up:
                     {
-                        if (this.presentLocation.Up.isOpen == DoorState.Open)
+                        if (this.presentLocation.Up.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.Up.location;
+                            this.presentLocation = this.presentLocation.Up.Location;
                             return true;
                         }
                         else
@@ -255,9 +255,9 @@ namespace Seed.Characters
                     }
                 case Direction.Down:
                     {
-                        if (this.presentLocation.Down.isOpen == DoorState.Open)
+                        if (this.presentLocation.Down.DoorState == DoorState.Open)
                         {
-                            this.presentLocation = this.presentLocation.Down.location;
+                            this.presentLocation = this.presentLocation.Down.Location;
                             return true;
                         }
                         else

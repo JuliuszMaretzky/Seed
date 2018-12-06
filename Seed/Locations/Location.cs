@@ -85,22 +85,22 @@ namespace Seed.Locations
             switch (direction)
             {
                 case Direction.North:
-                    this.North = new Door(wantedState, this.North.location);
+                    this.North = new Door(wantedState, this.North.Location);
                     break;
                 case Direction.South:
-                    this.South = new Door(wantedState, this.South.location);
+                    this.South = new Door(wantedState, this.South.Location);
                     break;
                 case Direction.East:
-                    this.East = new Door(wantedState, this.East.location);
+                    this.East = new Door(wantedState, this.East.Location);
                     break;
                 case Direction.West:
-                    this.West = new Door(wantedState, this.West.location);
+                    this.West = new Door(wantedState, this.West.Location);
                     break;
                 case Direction.Up:
-                    this.Up = new Door(wantedState, this.Up.location);
+                    this.Up = new Door(wantedState, this.Up.Location);
                     break;
                 case Direction.Down:
-                    this.Down = new Door(wantedState, this.Down.location);
+                    this.Down = new Door(wantedState, this.Down.Location);
                     break;
 
             }

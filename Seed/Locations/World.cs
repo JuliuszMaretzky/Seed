@@ -59,6 +59,7 @@ namespace Seed.Locations
             //10
             Locations.Add(new Location("Więzienie dla chowańców"));
 
+
             //Here horde of NPCs begins
             //0
             NPCs.Add(new Human("Twoja stara", "gotuje coś na kuchence.", "Twoja rodzicielka jest jak koń - " +
@@ -76,6 +77,10 @@ namespace Seed.Locations
                 "bękart sąsiada", 5, 50, 1, Locations[3], true, true));
             //3
             NPCs.Add(new Player("Chowaniec", presentLocation: Locations[10]));
+            //4
+            NPCs.Add(new DomesticAnimal("Kot Filemon", "łasi się namolnie.", "Domowy futrzak wykarmiony na tłustej" +
+                 "kupnej karmie", 1, 1, 0, Locations[8]));
+
 
             //Here stack of Items begins
             //0
