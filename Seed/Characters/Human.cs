@@ -91,6 +91,10 @@ namespace Seed.Characters
         {
             if (character is Player)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine($"{this.Name} atakuje cię!");
+                System.Threading.Thread.Sleep(500);
+
                 if (new Random().Next(0, 2) > 0)
                 {
                     character.HP -= (int)(this.Strength - character.Armor);
