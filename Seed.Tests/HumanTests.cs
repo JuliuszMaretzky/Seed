@@ -5,6 +5,8 @@ using NUnit.Framework;
 using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
+using FluentAssertions;
+using Seed.Scenarios;
 
 namespace Seed.Tests
 {
@@ -17,6 +19,7 @@ namespace Seed.Tests
         [TestCase(Direction.West)]
         [TestCase(Direction.Up)]
         [TestCase(Direction.Down)]
+        [Category("Human.Move")]
         public void ShouldMoveToNeighbouringLocationIfDoorIsOpen(Direction parentDirection)
         {
             var location1 = new Location();
@@ -26,7 +29,7 @@ namespace Seed.Tests
 
             human.Move(parentDirection);
 
-            Assert.That(human.presentLocation, Is.EqualTo(location1));
+            human.presentLocation.Should().Be(location1);
         }
 
         [TestCase(Direction.North, DoorState.Closed)]
@@ -41,6 +44,7 @@ namespace Seed.Tests
         [TestCase(Direction.West, DoorState.Hidden)]
         [TestCase(Direction.Up, DoorState.Hidden)]
         [TestCase(Direction.Down, DoorState.Hidden)]
+        [Category("Human.Move")]
         public void ShouldNotMoveToNeighbouringLocationIfDoorIsClosedOrHidden(
             Direction parentDirection, DoorState doorState)
         {
@@ -51,28 +55,22 @@ namespace Seed.Tests
 
             human.Move(parentDirection);
 
-            Assert.That(human.presentLocation, Is.EqualTo(location2));
+            human.presentLocation.Should().Be(location2);
         }
 
-        [Test]
-        public void ShouldHaveDamageAndArmorEqualToProperValues()
+        [TestCase((uint)10)]
+        [TestCase((uint)5)]
+        [Category("Human.Attack")]
+        public void DefenderShouldBeDeadIfHumanAttacksHumanAndHasAtLeast3TimesMoreStrengthThanDefendersArmor(
+            uint defenderArmor)
         {
             var location = new Location();
-            var human = new Human(presentLocation: location, strength: 2, armor: 1);
+            var attacker = new Human(strength: 30, presentLocation: location);
+            var defender = new Human(armor: defenderArmor, presentLocation: location);
 
-            human.ReceiveItems(new List<Item>()
-            {
-                new Weapon(damage: 1),
-                new Weapon(damage: 2),
-                new Armor(toughness: 1),
-                new Armor(toughness: 5)
-            });
+            attacker.Attack(defender);
 
-            Assert.That(human.Damage, Is.EqualTo(8));
-            Assert.That(human.Armor, Is.EqualTo(6));
+            Battle.Garbage.Should().Contain(defender);
         }
-
-
-
     }
 }

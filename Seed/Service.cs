@@ -13,9 +13,9 @@ namespace Seed
     {
         public static void Navigate()
         {
-            string name=Welcome();
+            string name = Welcome();
             World world = new World();
-            Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit:(Player)world.NPCs[3]);
+            Player player = new Player(name, presentLocation: world.Locations[0], familiarSpirit: (Player)world.NPCs[3]);
             Book scrap = new Book("Świstek", "zaraz odleci.", 0, "Napisz: pomoc");
             player.Inventory.Add(scrap);
             Command(player, world);
@@ -150,16 +150,16 @@ namespace Seed
 
         private static void MoveCharacter(Character character)
         {
-            IMove movingChar = (IMove) character;
+            IMove movingChar = (IMove)character;
             if (movingChar.IsLazy == false)
             {
                 movingChar.Move(Direction.Unknown);
             }
         }
-        
+
         private static void LetCharacterAttack(Character character, World world)
         {
-            IAttack attacker = (IAttack) character;
+            IAttack attacker = (IAttack)character;
 
             if (attacker.IsAggressive == true)
             {
@@ -167,7 +167,7 @@ namespace Seed
                 {
                     if (defender.HP > 0 && character.Strength >= 3 * defender.Armor && character != defender)
                     {
-                        attacker.Attack(defender, world);
+                        attacker.Attack(defender);
                         break;
                     }
 
@@ -177,7 +177,7 @@ namespace Seed
                 {
                     if (defender.HP > 0 && character != defender)
                     {
-                        attacker.Attack(defender, world);
+                        attacker.Attack(defender);
                         break;
                     }
                 }
@@ -250,15 +250,15 @@ namespace Seed
                 {
                     var wantedItem = _wantedItem.First();
 
-                    if (wantedItem.GetType() == typeof(Book) && read!=null)
+                    if (wantedItem.GetType() == typeof(Book) && read != null)
                     {
                         read((Book)wantedItem);
                     }
-                    else if (wantedItem.GetType() == typeof(Food) && eat!=null)
+                    else if (wantedItem.GetType() == typeof(Food) && eat != null)
                     {
                         eat((Food)wantedItem);
                     }
-                    else if (wantedItem.GetType() == typeof(Drink) && drink!=null)
+                    else if (wantedItem.GetType() == typeof(Drink) && drink != null)
                     {
                         drink((Drink)wantedItem);
                     }
@@ -343,7 +343,7 @@ namespace Seed
                 if (_wantedChar.Any())
                 {
                     var wantedChar = _wantedChar.First();
-                    player.Attack(wantedChar, world);
+                    player.Attack(wantedChar);
                 }
                 else
                 {

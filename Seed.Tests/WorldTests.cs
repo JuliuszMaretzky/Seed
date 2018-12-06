@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 using Seed.Characters;
 using Seed.Locations;
@@ -13,6 +14,7 @@ namespace Seed.Tests
         [TestCase("Sypialnia")]
         [TestCase("Twój pokój")]
         [TestCase("Klatka schodowa")]
+        [Category("World.Constructor")]
         public void PlayersApartmentShouldBeBuiltCorrectly(string target)
         {
             var home = new World();
@@ -27,7 +29,7 @@ namespace Seed.Tests
                         player.Move(Direction.South);
                         player.Move(Direction.South);
 
-                        Assert.That(player.presentLocation.Name, Is.EqualTo("Sypialnia"));
+                        player.presentLocation.Name.Should().Be("Sypialnia");
                     }
                     break;
                 case "Twój pokój":
@@ -38,7 +40,7 @@ namespace Seed.Tests
                         player.Move(Direction.South);
                         player.Move(Direction.West);
 
-                        Assert.That(player.presentLocation.Name, Is.EqualTo("Twój pokój"));
+                        player.presentLocation.Name.Should().Be("Twój pokój");
                     }
                     break;
                 case "Klatka schodowa":
@@ -49,7 +51,7 @@ namespace Seed.Tests
                         player.Move(Direction.South);
                         player.Move(Direction.South);
 
-                        Assert.That(player.presentLocation.Name, Is.EqualTo("Przedsionek"));
+                        player.presentLocation.Name.Should().Be("Przedsionek");
                     }
                     break;
             }

@@ -48,7 +48,7 @@ namespace Seed.Characters
 
         public Player(string name = "Nullator", string description = "jest, ale... jak to możliwe?",
                 string overview = "Wygląda zupełnie jak ty.", int hp = 50, int energy = 25, uint strength = 5,
-                uint armor = 5, Location presentLocation = null, Player familiarSpirit=null) :
+                uint armor = 5, Location presentLocation = null, Player familiarSpirit = null) :
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
             if (name == String.Empty)
@@ -87,7 +87,8 @@ namespace Seed.Characters
             {
                 case Direction.North:
                     {
-                        if (!(this.presentLocation.North.isOpen == DoorState.Closed))
+                        if (this.presentLocation.North.isOpen != DoorState.Closed &&
+                            this.presentLocation.North.location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.North.location;
@@ -95,13 +96,14 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
                     }
                     break;
                 case Direction.South:
                     {
-                        if (!(this.presentLocation.South.isOpen == DoorState.Closed))
+                        if (this.presentLocation.South.isOpen != DoorState.Closed &&
+                            this.presentLocation.South.location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.South.location;
@@ -109,13 +111,14 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
                     }
                     break;
                 case Direction.East:
                     {
-                        if (!(this.presentLocation.East.isOpen == DoorState.Closed))
+                        if (this.presentLocation.East.isOpen != DoorState.Closed && 
+                            this.presentLocation.East.location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.East.location;
@@ -123,13 +126,14 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
                     }
                     break;
                 case Direction.West:
                     {
-                        if (!(this.presentLocation.West.isOpen == DoorState.Closed))
+                        if (this.presentLocation.West.isOpen != DoorState.Closed &&
+                            this.presentLocation.West.location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.West.location;
@@ -137,13 +141,14 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
                     }
                     break;
                 case Direction.Up:
                     {
-                        if (!(this.presentLocation.Up.isOpen == DoorState.Closed))
+                        if (this.presentLocation.Up.isOpen != DoorState.Closed &&
+                            this.presentLocation.Up.location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.Up.location;
@@ -151,13 +156,14 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
                     }
                     break;
                 case Direction.Down:
                     {
-                        if (!(this.presentLocation.Down.isOpen == DoorState.Closed))
+                        if (this.presentLocation.Down.isOpen != DoorState.Closed &&
+                            this.presentLocation.Down.location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             this.presentLocation = this.presentLocation.Down.location;
@@ -165,8 +171,13 @@ namespace Seed.Characters
                         }
                         else
                         {
-                            Console.WriteLine("Nie możesz tam iść");
+                            Console.WriteLine("Nie możesz tam iść.");
                         }
+                    }
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Nie możesz tam iść.");
                     }
                     break;
             }
@@ -484,11 +495,11 @@ namespace Seed.Characters
             Service.DisplayLongString("\n" + character.Overview + "\n");
 
             Console.Write($"{character.Name} jest ");
-            if(character.HP==character.MaxHP)
+            if (character.HP == character.MaxHP)
                 Console.WriteLine("w pełni sił.");
-            else if(character.HP>0.75*character.MaxHP)
+            else if (character.HP > 0.75 * character.MaxHP)
                 Console.WriteLine("lekko ranny.");
-            else if (character.HP>0.5*character.MaxHP)
+            else if (character.HP > 0.5 * character.MaxHP)
                 Console.WriteLine("ciężko ranny.");
             else
                 Console.WriteLine("umierający.");
@@ -496,15 +507,15 @@ namespace Seed.Characters
             Console.WriteLine();
             var strengthDifference = (int)character.Strength - (int)this.Strength;
 
-            if(strengthDifference>=10)
+            if (strengthDifference >= 10)
                 Console.WriteLine("Nie masz szans w walce.");
-            else if(strengthDifference>=5)
+            else if (strengthDifference >= 5)
                 Console.WriteLine("Jesteś wyraźnie słabszy.");
-            else if (strengthDifference>=2)
+            else if (strengthDifference >= 2)
                 Console.WriteLine("Chyba masz jakieś szanse.");
-            else if(strengthDifference>=-2)
+            else if (strengthDifference >= -2)
                 Console.WriteLine("Szanse w walce są wyrównane.");
-            else if(strengthDifference>=-5)
+            else if (strengthDifference >= -5)
                 Console.WriteLine("Jesteś silniejszy.");
             else
                 Console.WriteLine("Wygrasz jednym strzałem.");
@@ -514,7 +525,7 @@ namespace Seed.Characters
         public void Lookout()
         {
             this.PrisonForFamiliars = this.FamiliarSpirit.presentLocation;
-            
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nRozglądasz się i widzisz:");
             Console.WriteLine("Na północy");
@@ -595,21 +606,18 @@ namespace Seed.Characters
             Console.WriteLine();
         }
 
-        public void Attack(Character character, World world)
+        public void Attack(Character character)
         {
             character.HP -= (int)(this.Strength - character.Armor);
 
             if (character.HP > 0)
             {
-                Battle.Fight(this, character, world);
+                Battle.Fight(this, character);
             }
             else
             {
                 Console.WriteLine($"Zabiłeś {character.Name}!");
-                character.presentLocation.Stack.AddRange(character.Inventory);
-                character.Inventory.Clear();
-                character.presentLocation.CharactersInLocation.Remove(character);
-                world.NPCs.Remove(character);
+                Battle.CleanTheMess(character);
             }
 
         }

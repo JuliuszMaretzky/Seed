@@ -6,6 +6,7 @@ using Seed.Characters;
 using Seed.Items;
 using Seed.Locations;
 using FluentAssertions;
+using Seed.Scenarios;
 
 namespace Seed.Tests
 {
@@ -13,34 +14,24 @@ namespace Seed.Tests
     public class PlayerTests
     {
         [Test]
+        [Category("Player.Constructor")]
         public void ShouldSetNameAsBezimiennyIfUserDontTypeAnyChars()
         {
             var location = new Location();
             var name = "";
             var player = new Player(name, presentLocation: location);
 
-            Assert.That(player.Name, Is.EqualTo("Bezimienny"));
+            player.Name.Should().Be("Bezimienny");
+            player.HP.Should().Be(50);
+            player.MaxHP.Should().Be(50);
+            player.Energy.Should().Be(25);
+            player.MaxEnergy.Should().Be(25);
+            player.MaxEnergy.Should().Be(player.Energy);
+            player.presentLocation.Should().Be(location);
         }
 
         [Test]
-        public void ShouldHave50HPOnStart()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-
-            Assert.That(player.HP, Is.EqualTo(50));
-        }
-
-        [Test]
-        public void ShouldHave50maxHPOnStart()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-
-            Assert.That(player.MaxHP, Is.EqualTo(50));
-        }
-
-        [Test]
+        [Category("Player.Properties")]
         public void ShouldHaveNotHPLessThanZero()
         {
             var location = new Location();
@@ -48,53 +39,27 @@ namespace Seed.Tests
 
             player.HP = -5;
 
-            Assert.That(player.HP, Is.EqualTo(0));
-        }
-
-
-        [Test]
-        public void ShouldHave25Energy()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-
-            Assert.That(player.Energy, Is.EqualTo(25));
+            player.HP.Should().Be(0);
         }
 
         [Test]
-        public void ShouldHave25MaxEnergy()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-
-            Assert.That(player.MaxEnergy, Is.EqualTo(25));
-        }
-
-        [Test]
-        public void ShouldHaveEnergyEqualsToMaxEnergy()
-        {
-            var location = new Location();
-            var player = new Player(presentLocation: location);
-
-            Assert.That(player.MaxEnergy, Is.EqualTo(player.Energy));
-        }
-
-        [Test]
+        [Category("Player.Move")]
         public void ShouldHaveLessEnergyAfterMove()
         {
             var location = new Location();
-            var location2 = new Location(parentDirection: Direction.Down, parentLocation: location);
+            //var location2 = new Location(parentDirection: Direction.Down, parentLocation: location);
             var player = new Player(presentLocation: location);
 
             player.Move(Direction.Up);
 
-            Assert.That(player.Energy, Is.LessThan(player.MaxEnergy));
+            player.Energy.Should().BeLessThan(player.MaxEnergy);
         }
 
         [TestCase(2)]
         [TestCase(3)]
         [TestCase(1)]
         [TestCase(0)]
+        [Category("Player.Move")]
         public void ShouldNotHaveNegativeEnergyAfterMove(int energy)
         {
             var location = new Location();
@@ -103,17 +68,7 @@ namespace Seed.Tests
 
             player.Move(Direction.Up);
 
-            Assert.That(player.Energy, Is.Not.LessThan(0));
-        }
-
-
-        [Test]
-        public void ShouldBeInSpecificLocationAfterInitialization()
-        {
-            var BornPlace = new Location();
-            var player = new Player("", presentLocation: BornPlace);
-
-            Assert.That(player.presentLocation, Is.EqualTo(BornPlace));
+            player.Energy.Should().BeGreaterOrEqualTo(0);
         }
 
         [TestCase(Direction.North, Direction.South)]
@@ -122,6 +77,7 @@ namespace Seed.Tests
         [TestCase(Direction.West, Direction.East)]
         [TestCase(Direction.Up, Direction.Down)]
         [TestCase(Direction.Down, Direction.Up)]
+        [Category("Player.Move")]
         public void ShouldNotMoveIfEnergyIsZero(Direction parent, Direction walk)
         {
             var location1 = new Location();
@@ -132,9 +88,8 @@ namespace Seed.Tests
 
             player.Move(walk);
 
-            Assert.That(player.presentLocation, Is.EqualTo(location1));
-            Assert.That(swr.ToString(), Is.EqualTo("Nie pochodzisz sobie. Musisz odpocząć\r\n"));
-
+            player.presentLocation.Should().Be(location1);
+            swr.ToString().Should().Be("Nie pochodzisz sobie. Musisz odpocząć\r\n");
         }
 
         [TestCase(Direction.North, Direction.South)]
@@ -143,6 +98,7 @@ namespace Seed.Tests
         [TestCase(Direction.East, Direction.West)]
         [TestCase(Direction.Up, Direction.Down)]
         [TestCase(Direction.Down, Direction.Up)]
+        [Category("Player.Move")]
         public void ShouldMoveToAnotherLocation(Direction parent, Direction move)
         {
             var location1 = new Location();
@@ -151,77 +107,80 @@ namespace Seed.Tests
 
             player.Move(move);
 
-            Assert.That(player.presentLocation, Is.EqualTo(location2));
+            player.presentLocation.Should().Be(location2);
         }
 
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.North, Direction.South)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.North, Direction.South)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.North, Direction.South)]
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.South, Direction.North)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.South, Direction.North)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.South, Direction.North)]
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.East, Direction.West)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.East, Direction.West)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.East, Direction.West)]
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.West, Direction.East)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.West, Direction.East)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.West, Direction.East)]
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Closed, DoorState.Hidden, Direction.Down, Direction.Up)]
-        [TestCase(DoorState.Closed, DoorState.Closed, Direction.Down, Direction.Up)]
-        [TestCase(DoorState.Closed, DoorState.Open, Direction.Down, Direction.Up)]
-        public void ShouldNotMoveIfDoorIsClosed(DoorState fromLocation1, DoorState fromLocation2,
+        [TestCase(DoorState.Hidden, Direction.North, Direction.South)]
+        [TestCase(DoorState.Closed, Direction.North, Direction.South)]
+        [TestCase(DoorState.Open, Direction.North, Direction.South)]
+        [TestCase(DoorState.Hidden, Direction.South, Direction.North)]
+        [TestCase(DoorState.Closed, Direction.South, Direction.North)]
+        [TestCase(DoorState.Open, Direction.South, Direction.North)]
+        [TestCase(DoorState.Hidden, Direction.East, Direction.West)]
+        [TestCase(DoorState.Closed, Direction.East, Direction.West)]
+        [TestCase(DoorState.Open, Direction.East, Direction.West)]
+        [TestCase(DoorState.Hidden, Direction.West, Direction.East)]
+        [TestCase(DoorState.Closed, Direction.West, Direction.East)]
+        [TestCase(DoorState.Open, Direction.West, Direction.East)]
+        [TestCase(DoorState.Hidden, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Closed, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Open, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Hidden, Direction.Down, Direction.Up)]
+        [TestCase(DoorState.Closed, Direction.Down, Direction.Up)]
+        [TestCase(DoorState.Open, Direction.Down, Direction.Up)]
+        [Category("Player.Move")]
+        public void ShouldNotMoveIfDoorIsClosed(DoorState fromHere,
             Direction parentDirection, Direction moveDirection)
         {
             var location1 = new Location();
             var location2 = new Location(parentDirection: parentDirection, parentLocation: location1,
-                fromParentDoorState: fromLocation1, fromHereDoorState: fromLocation2);
+                fromParentDoorState: DoorState.Closed, fromHereDoorState: fromHere);
             var player = new Player(presentLocation: location1);
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
 
             player.Move(moveDirection);
 
-            Assert.That(player.presentLocation, Is.EqualTo(location1));
-            Assert.That(swr.ToString(), Is.EqualTo("Nie możesz tam iść\r\n"));
+            player.presentLocation.Should().Be(location1);
+            swr.ToString().Should().Be("Nie możesz tam iść.\r\n");
         }
 
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.North, Direction.South)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.North, Direction.South)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.North, Direction.South)]
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.South, Direction.North)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.South, Direction.North)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.South, Direction.North)]
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.East, Direction.West)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.East, Direction.West)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.East, Direction.West)]
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.West, Direction.East)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.West, Direction.East)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.West, Direction.East)]
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.Up, Direction.Down)]
-        [TestCase(DoorState.Hidden, DoorState.Hidden, Direction.Down, Direction.Up)]
-        [TestCase(DoorState.Hidden, DoorState.Closed, Direction.Down, Direction.Up)]
-        [TestCase(DoorState.Hidden, DoorState.Open, Direction.Down, Direction.Up)]
-        public void ShouldMoveWhenDoorIsHidden(DoorState fromLocation1, DoorState fromLocation2,
-            Direction parentDirection, Direction moveDirection)
+        [TestCase(DoorState.Hidden, Direction.North, Direction.South)]
+        [TestCase(DoorState.Closed, Direction.North, Direction.South)]
+        [TestCase(DoorState.Open, Direction.North, Direction.South)]
+        [TestCase(DoorState.Hidden, Direction.South, Direction.North)]
+        [TestCase(DoorState.Closed, Direction.South, Direction.North)]
+        [TestCase(DoorState.Open, Direction.South, Direction.North)]
+        [TestCase(DoorState.Hidden, Direction.East, Direction.West)]
+        [TestCase(DoorState.Closed, Direction.East, Direction.West)]
+        [TestCase(DoorState.Open, Direction.East, Direction.West)]
+        [TestCase(DoorState.Hidden, Direction.West, Direction.East)]
+        [TestCase(DoorState.Closed, Direction.West, Direction.East)]
+        [TestCase(DoorState.Open, Direction.West, Direction.East)]
+        [TestCase(DoorState.Hidden, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Closed, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Open, Direction.Up, Direction.Down)]
+        [TestCase(DoorState.Hidden, Direction.Down, Direction.Up)]
+        [TestCase(DoorState.Closed, Direction.Down, Direction.Up)]
+        [TestCase(DoorState.Open, Direction.Down, Direction.Up)]
+        [Category("Player.Move")]
+        public void ShouldMoveWhenDoorIsHidden(DoorState fromHere, Direction parentDirection,
+            Direction moveDirection)
         {
             var location1 = new Location();
             var location2 = new Location(parentDirection: parentDirection, parentLocation: location1,
-                fromParentDoorState: fromLocation1, fromHereDoorState: fromLocation2);
+                fromParentDoorState: DoorState.Hidden, fromHereDoorState: fromHere);
             var player = new Player(presentLocation: location1);
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
 
             player.Move(moveDirection);
 
-            Assert.That(player.presentLocation, Is.EqualTo(location2));
+            player.presentLocation.Should().Be(location2);
         }
 
         [Test]
+        [Category("Player.PickUp")]
         public void ShouldTakeItemFromLocationStack()
         {
             var location = new Location();
@@ -232,11 +191,12 @@ namespace Seed.Tests
 
             player.PickUp(item);
 
-            Assert.That(player.Inventory, Contains.Item(item));
-            Assert.That(swr.ToString(), Is.EqualTo($"Podnosisz {item.Name}.\r\n"));
+            player.Inventory.Should().Contain(item);
+            swr.ToString().Should().Be($"Podnosisz {item.Name}.\r\n");
         }
 
         [Test]
+        [Category("Player.PickUp")]
         public void ShouldTakeItemFromLocationStackAndItShouldNoLongerBeThere()
         {
             var location = new Location();
@@ -245,10 +205,11 @@ namespace Seed.Tests
 
             player.PickUp(item);
 
-            Assert.That(location.Stack, Has.None.EqualTo(item));
+            location.Stack.Should().NotContain(item);
         }
 
         [Test]
+        [Category("Player.PutAway")]
         public void ShouldPutAwayItemFromInventory()
         {
             var location = new Location();
@@ -260,11 +221,12 @@ namespace Seed.Tests
 
             player.PutAway(item);
 
-            Assert.That(player.Inventory, Has.None.EqualTo(item));
-            Assert.That(swr.ToString(), Is.EqualTo($"Wyrzucasz {item.Name}.\r\n"));
+            player.Inventory.Should().NotContain(item);
+            swr.ToString().Should().Be($"Wyrzucasz {item.Name}.\r\n");
         }
 
         [Test]
+        [Category("Player.PutAway")]
         public void ShouldPutAwayItemAndPutItOnLocationStack()
         {
             var location = new Location();
@@ -274,10 +236,11 @@ namespace Seed.Tests
 
             player.PutAway(item);
 
-            Assert.That(location.Stack, Contains.Item(item));
+            location.Stack.Should().Contain(item);
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldWearItemFromInventory()
         {
             var location = new Location();
@@ -289,22 +252,25 @@ namespace Seed.Tests
 
             player.Wear(item);
 
-            Assert.That(player.WornItems, Contains.Item(item));
-            Assert.That(swr.ToString(), Is.EqualTo($"Zakładasz na siebie {item.Name}.\r\n"));
+            player.WornItems.Should().Contain(item);
+            swr.ToString().Should().Be($"Zakładasz na siebie {item.Name}.\r\n");
         }
-
+        [Test]
+        [Category("Player.Wear")]
         public void ShouldNotHaveAnItemInInventoryAfterWear()
         {
-            var player = new Player();
-            var item = new Weapon();
-            player.Inventory.Add(item);
+            var location = new Location();
+            var player = new Player(presentLocation: location);
+            var item = new Weapon(location: location);
+            player.PickUp(item);
 
             player.Wear(item);
 
-            Assert.That(player.Inventory, Has.None.EqualTo(item));
+            player.Inventory.Should().NotContain(item);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldTakeOffItemAndPutItIntoInventory()
         {
             var location = new Location();
@@ -317,11 +283,12 @@ namespace Seed.Tests
 
             player.TakeOff(item);
 
-            Assert.That(player.Inventory, Contains.Item(item));
-            Assert.That(swr.ToString(), Is.EqualTo($"Zdejmujesz z siebie {item.Name}.\r\n"));
+            player.Inventory.Should().Contain(item);
+            swr.ToString().Should().Be($"Zdejmujesz z siebie {item.Name}.\r\n");
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldNotHaveAnItemInWornItemsAfterTakeOff()
         {
             var location = new Location();
@@ -332,10 +299,11 @@ namespace Seed.Tests
 
             player.TakeOff(item);
 
-            Assert.That(player.WornItems, Has.None.EqualTo(item));
+            player.WornItems.Should().NotContain(item);
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldIncreasePlayerDamageWhenWearWeapon()
         {
             var location = new Location();
@@ -345,10 +313,11 @@ namespace Seed.Tests
 
             player.Wear(weapon);
 
-            Assert.That(player.Damage, Is.EqualTo(10));
+            player.Damage.Should().Be(10);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldDecreasePlayerDamageWhenTakeOffWeapon()
         {
             var location = new Location();
@@ -359,10 +328,11 @@ namespace Seed.Tests
 
             player.TakeOff(weapon);
 
-            Assert.That(player.Damage, Is.EqualTo(9));
+            player.Damage.Should().Be(9);
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldIncreasePlayerArmorWhenWearArmor()
         {
             var location = new Location();
@@ -375,10 +345,11 @@ namespace Seed.Tests
             player.Wear(helmet);
             player.Wear(armor);
 
-            Assert.That(player.Armor, Is.EqualTo(8));
+            player.Armor.Should().Be(8);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldDecreasePlayerArmorWhenTakeOffArmor()
         {
             var location = new Location();
@@ -392,10 +363,11 @@ namespace Seed.Tests
 
             player.TakeOff(armor);
 
-            Assert.That(player.Armor, Is.EqualTo(6));
+            player.Armor.Should().Be(6);
         }
 
         [Test]
+        [Category("Player.Rest")]
         public void ShouldHaveEnergyOnMaxEnergyLevelAfterRest()
         {
             var location1 = new Location();
@@ -405,31 +377,29 @@ namespace Seed.Tests
             player.Move(Direction.North);
             player.Move(Direction.South);
             player.Move(Direction.North);
-            StringWriter swr = new StringWriter();
-            Console.SetOut(swr);
 
             player.Rest();
 
-            Assert.That(player.Energy, Is.EqualTo(player.MaxEnergy));
-            Assert.That(swr.ToString(), Contains.Substring("Odpoczywasz sobie"));
+            player.Energy.Should().Be(player.MaxEnergy);
         }
 
         [Test]
+        [Category("Player.Rest")]
         public void ShouldWriteCommentInsteadOfRestingIfEnergyIsMaxed()
         {
             var location1 = new Location();
             var location2 = new Location(parentDirection: Direction.North, parentLocation: location1);
             var player = new Player(presentLocation: location1, energy: 30);
-
-
             StringWriter swr = new StringWriter();
             Console.SetOut(swr);
+
             player.Rest();
 
-            Assert.That(swr.ToString(), Is.EqualTo("\nJesteś wypoczęty\r\n"));
+            swr.ToString().Should().Be("\nJesteś wypoczęty\r\n");
         }
 
         [Test]
+        [Category("Player.Properties")]
         public void ShouldHaveBurdenEqualsToZeroIfNaked()
         {
             var location = new Location();
@@ -438,11 +408,12 @@ namespace Seed.Tests
             player.Inventory.Clear();
             player.WornItems.Clear();
 
-            Assert.That(player.Burden, Is.EqualTo(0));
+            player.Burden.Should().Be(0);
         }
 
 
         [Test]
+        [Category("Player.PickUp")]
         public void ShouldAddWeightOfTakenItemToBurden()
         {
             var location = new Location();
@@ -453,10 +424,11 @@ namespace Seed.Tests
 
             player.PickUp(location.Stack[0]);
 
-            Assert.That(player.Burden, Is.EqualTo(1));
+            player.Burden.Should().Be(1);
         }
 
         [Test]
+        [Category("Player.PickUp")]
         public void ShouldNotTakeItemAndDisplayCommentIfBurdenEqualsToCarryingCapacity()
         {
             var location = new Location();
@@ -469,14 +441,15 @@ namespace Seed.Tests
 
             player.PickUp(item1);
 
-            Assert.That(player.Inventory, Has.None.EqualTo(item1));
-            Assert.That(swr.ToString(), Is.EqualTo("To jest za ciężkie.\r\n"));
+            player.Inventory.Should().NotContain(item1);
+            swr.ToString().Should().Be("To jest za ciężkie.\r\n");
         }
 
         [TestCase((uint)0, (uint)2)]
         [TestCase((uint)0, (uint)0)]
         [TestCase((uint)2, (uint)0)]
         [TestCase((uint)5, (uint)4)]
+        [Category("Player.PutAway")]
         public void ShouldReduceBurdenWhenPutAwayItem(uint weight1, uint weight2)
         {
             var location = new Location();
@@ -488,10 +461,11 @@ namespace Seed.Tests
 
             player.PutAway(item2);
 
-            Assert.That(player.Burden, Is.EqualTo(weight1));
+            player.Burden.Should().Be(weight1);
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldHaveExtendedCarryingCapacityAfterWearABag()
         {
             var location = new Location();
@@ -502,10 +476,11 @@ namespace Seed.Tests
 
             player.Wear(bag);
 
-            Assert.That(player.CarryingCapacity, Is.EqualTo(sumOfCapacity));
+            player.CarryingCapacity.Should().Be(sumOfCapacity);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldReduceCarryingCapacityAfterTakeOffBag()
         {
             var location = new Location();
@@ -517,10 +492,11 @@ namespace Seed.Tests
 
             player.TakeOff(bag);
 
-            Assert.That(player.CarryingCapacity, Is.LessThan(capacity));
+            player.CarryingCapacity.Should().BeLessThan(capacity);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldThrowAwayLightestItemsWhenCarryingCapacityIsInsufficientAfterTakeOffBag()
         {
             var location = new Location();
@@ -540,7 +516,7 @@ namespace Seed.Tests
 
             player.TakeOff(bag);
 
-            Assert.That(player.Inventory, Is.EqualTo(expectedItems));
+            player.Inventory.Should().BeEquivalentTo(expectedItems);
         }
 
         [TestCase(ArmorType.Boots, "buty")]
@@ -549,6 +525,7 @@ namespace Seed.Tests
         [TestCase(ArmorType.Jacket, "zbroję")]
         [TestCase(ArmorType.Shield, "tarczę")]
         [TestCase(ArmorType.Trousers, "spodnie")]
+        [Category("Player.Wear")]
         public void ShouldNotBeAbleToWearSecondArmorOfTheSameType(ArmorType type, string wornThing)
         {
             var location = new Location();
@@ -563,14 +540,15 @@ namespace Seed.Tests
 
             player.Wear(item2);
 
-            Assert.That(player.WornItems, Contains.Item(item1));
-            Assert.That(player.WornItems, Does.Not.Contain(item2));
-            Assert.That(player.Inventory, Contains.Item(item2));
-            Assert.That(player.Inventory, Does.Not.Contain(item1));
-            Assert.That(swr.ToString(), Is.EqualTo($"Już masz na sobie {wornThing}.\r\n"));
+            player.WornItems.Should().Contain(item1);
+            player.WornItems.Should().NotContain(item2);
+            player.Inventory.Should().Contain(item2);
+            player.Inventory.Should().NotContain(item1);
+            swr.ToString().Should().Be($"Już masz na sobie {wornThing}.\r\n");
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldHaveOnlyOneWeaponInHand()
         {
             var location = new Location();
@@ -585,14 +563,15 @@ namespace Seed.Tests
 
             player.Wear(club);
 
-            Assert.That(player.Inventory, Contains.Item(club));
-            Assert.That(player.WornItems, Does.Not.Contain(club));
-            Assert.That(player.Inventory, Does.Not.Contain(gun));
-            Assert.That(player.WornItems, Contains.Item(gun));
-            Assert.That(swr.ToString(), Is.EqualTo("Już trzymasz broń.\r\n"));
+            player.Inventory.Should().Contain(club);
+            player.WornItems.Should().NotContain(club);
+            player.Inventory.Should().NotContain(gun);
+            player.WornItems.Should().Contain(gun);
+            swr.ToString().Should().Be("Już trzymasz broń.\r\n");
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldHaveOnlyOneBagWorn()
         {
             var location = new Location();
@@ -607,14 +586,15 @@ namespace Seed.Tests
 
             player.Wear(bag2);
 
-            Assert.That(player.Inventory, Contains.Item(bag2));
-            Assert.That(player.WornItems, Does.Not.Contain(bag2));
-            Assert.That(player.Inventory, Does.Not.Contain(bag1));
-            Assert.That(player.WornItems, Contains.Item(bag1));
-            Assert.That(swr.ToString(), Is.EqualTo("Już masz na sobie torbę.\r\n"));
+            player.Inventory.Should().Contain(bag2);
+            player.WornItems.Should().NotContain(bag2);
+            player.Inventory.Should().NotContain(bag1);
+            player.WornItems.Should().Contain(bag1);
+            swr.ToString().Should().Be("Już masz na sobie torbę.\r\n");
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldNotBeAbleToWearAnythingExceptWeaponOrArmorOrBag()
         {
             var location = new Location();
@@ -622,10 +602,10 @@ namespace Seed.Tests
             var book = new Book(location: location);
             var food = new Food(location: location);
             var drink = new Drink(location: location);
-            var ExpectedItemsList = new List<Item>();
-            ExpectedItemsList.Add(book);
-            ExpectedItemsList.Add(food);
-            ExpectedItemsList.Add(drink);
+            var expectedItemsList = new List<Item>();
+            expectedItemsList.Add(book);
+            expectedItemsList.Add(food);
+            expectedItemsList.Add(drink);
             player.PickUp(book);
             player.PickUp(food);
             player.PickUp(drink);
@@ -636,13 +616,14 @@ namespace Seed.Tests
             player.Wear(food);
             player.Wear(drink);
 
-            Assert.That(player.Inventory, Is.EqualTo(ExpectedItemsList));
-            Assert.That(player.WornItems, Is.Empty);
-            Assert.That(swr.ToString(), Is.EqualTo("Nie możesz tego na siebie założyć.\r\n" +
-                "Nie możesz tego na siebie założyć.\r\nNie możesz tego na siebie założyć.\r\n"));
+            player.Inventory.Should().BeEquivalentTo(expectedItemsList);
+            player.WornItems.Should().BeEmpty();
+            swr.ToString().Should().Be("Nie możesz tego na siebie założyć.\r\n" +
+            "Nie możesz tego na siebie założyć.\r\nNie możesz tego na siebie założyć.\r\n");
         }
 
         [Test]
+        [Category("Player.Wear")]
         public void ShouldReduceBurdenWhenWearItem()
         {
             var location = new Location();
@@ -653,10 +634,11 @@ namespace Seed.Tests
 
             player.Wear(item);
 
-            Assert.That(player.Burden, Is.LessThan(burden));
+            player.Burden.Should().BeLessThan(burden);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldIncreaseBurdenWhenTakeOffItem()
         {
             var location = new Location();
@@ -669,11 +651,12 @@ namespace Seed.Tests
 
             player.TakeOff(item);
 
-            Assert.That(player.Burden, Is.GreaterThan(burden2));
-            Assert.That(player.Burden, Is.EqualTo(burden));
+            player.Burden.Should().BeGreaterThan(burden2);
+            player.Burden.Should().Be(burden);
         }
 
         [Test]
+        [Category("Player.TakeOff")]
         public void ShouldLetFallItemAfterTakeOffIfBurdenIsTooBig()
         {
             var location = new Location();
@@ -688,14 +671,14 @@ namespace Seed.Tests
 
             player.TakeOff(plate);
 
-            Assert.That(player.Inventory, Contains.Item(item));
-            Assert.That(player.Inventory, Does.Not.Contain(plate));
-            Assert.That(player.WornItems, Is.Empty);
-            Assert.That(swr.ToString(), Is.EqualTo($"To jest zbyt ciężkie! Upuszczasz na ziemię " +
-                $"{plate.Name}.\r\n"));
+            player.Inventory.Should().Contain(item);
+            player.Inventory.Should().NotContain(plate);
+            player.WornItems.Should().BeEmpty();
+            swr.ToString().Should().Be($"To jest zbyt ciężkie! Upuszczasz na ziemię {plate.Name}.\r\n");
         }
 
         [Test]
+        [Category("Player.Rest")]
         public void ShouldDisplayOneOfCommentsFromListWhenRest()
         {
             var location1 = new Location();
@@ -726,6 +709,7 @@ namespace Seed.Tests
         }
 
         [Test]
+        [Category("Player.Read")]
         public void ShouldBeAbleToReadBooksFromInventory()
         {
             var location = new Location();
@@ -737,14 +721,15 @@ namespace Seed.Tests
 
             player.Read((Book)player.Inventory[0]);
 
-            Assert.That(swr.ToString(), Is.EqualTo("\r\n\"Nie zapomnij zapisać karteczki\"\r\n\r\n"));
+            swr.ToString().Should().Be("\r\n\"Nie zapomnij zapisać karteczki\"\r\n\r\n");
         }
 
         [Test]
+        [Category("Player.Lookout")]
         public void ShouldBeAbleToSeeCharactersInASmallDistance()
         {
             var prison = new Location();
-            var zyzyx = new Player(presentLocation:prison);
+            var zyzyx = new Player(presentLocation: prison);
             var location1 = new Location();
             var location2 = new Location(parentDirection: Direction.South, parentLocation: location1);
             var location3 = new Location(parentDirection: Direction.South, parentLocation: location2);
@@ -758,7 +743,7 @@ namespace Seed.Tests
             var location11 = new Location(parentDirection: Direction.East, parentLocation: location1);
             var location12 = new Location(parentDirection: Direction.East, parentLocation: location11);
             var location13 = new Location(parentDirection: Direction.East, parentLocation: location12);
-            var player = new Player(presentLocation: location1, familiarSpirit:zyzyx);
+            var player = new Player(presentLocation: location1, familiarSpirit: zyzyx);
             var human1 = new Human("Azjata", presentLocation: location8);
             var human2 = new Human("Wiking", presentLocation: location3);
             var human3 = new Human("Americano", presentLocation: location13);
@@ -771,17 +756,17 @@ namespace Seed.Tests
 
             player.Lookout();
 
-            Assert.That(swr.ToString(), Is.EqualTo("\nRozglądasz się i widzisz:\r\n" +
+            swr.ToString().Should().Be("\nRozglądasz się i widzisz:\r\n" +
                 "Na północy\r\nWiking jest niedaleko.\r\n" +
                 "Na południu\r\nEgipcjanin jest blisko.\r\nPigmej jest niedaleko.\r\nBur jest daleko." +
                 "\r\nAustralijczyk jest daleko.\r\n" +
                 "Na wschodzie\r\nAzjata jest blisko.\r\n" +
-                "Na zachodzie\r\nAmericano jest daleko.\r\n"));
-            Assert.That(zyzyx.presentLocation, Is.EqualTo(prison));
-
+                "Na zachodzie\r\nAmericano jest daleko.\r\n");
+            zyzyx.presentLocation.Should().Be(prison);
         }
 
         [Test]
+        [Category("Player.Lookout")]
         public void ShouldBeAbleToSeeCharactersInASmallDistanceAndSomeDoorsAreNotOpen()
         {
             var prison = new Location();
@@ -815,15 +800,16 @@ namespace Seed.Tests
 
             player.Lookout();
 
-            Assert.That(swr.ToString(), Is.EqualTo("\nRozglądasz się i widzisz:\r\n" +
+            swr.ToString().Should().Be("\nRozglądasz się i widzisz:\r\n" +
                 "Na północy\r\nWiking jest niedaleko.\r\n" +
                 "Na południu\r\nEgipcjanin jest blisko.\r\n" +
                 "Na wschodzie\r\nAzjata jest blisko.\r\n" +
-                "Na zachodzie\r\n"));
-            Assert.That(zyzyx.presentLocation, Is.EqualTo(prison));
+                "Na zachodzie\r\n");
+            zyzyx.presentLocation.Should().Be(prison);
         }
 
         [Test]
+        [Category("Player.Watch")]
         public void ShouldDisplayOverviewOfLocation()
         {
             var location = new Location();
@@ -833,10 +819,11 @@ namespace Seed.Tests
 
             player.Watch(location);
 
-            Assert.That(swr.ToString(), Is.EqualTo("\r\n" + location.Overview + "\r\n\r\n"));
+            swr.ToString().Should().Be("\r\n" + location.Overview + "\r\n\r\n");
         }
 
         [Test]
+        [Category("Player.Watch")]
         public void ShouldDisplayOverviewOfCharacter()
         {
             var location = new Location();
@@ -868,6 +855,7 @@ namespace Seed.Tests
         }
 
         [Test]
+        [Category("Player.Eat")]
         public void ShouldRegenerateHPAWhenEat()
         {
             var location = new Location();
@@ -878,10 +866,11 @@ namespace Seed.Tests
 
             player.Eat(snack);
 
-            Assert.That(player.HP, Is.EqualTo(expectedHP));
+            player.HP.Should().Be(expectedHP);
         }
 
         [Test]
+        [Category("Player.Eat")]
         public void ShouldNotRegenerateHPAboveMaxHP()
         {
             var location = new Location();
@@ -891,10 +880,11 @@ namespace Seed.Tests
 
             player.Eat(snack);
 
-            Assert.That(player.HP, Is.EqualTo(player.MaxHP));
+            player.HP.Should().Be(player.MaxHP);
         }
 
         [Test]
+        [Category("Player.Drink")]
         public void ShouldRegenerateEnergyWhenDrink()
         {
             var location = new Location();
@@ -905,10 +895,11 @@ namespace Seed.Tests
 
             player.Drink(water);
 
-            Assert.That(player.Energy, Is.EqualTo(expectedEnergy));
+            player.Energy.Should().Be(expectedEnergy);
         }
 
         [Test]
+        [Category("Player.Drink")]
         public void ShouldNotRegenerateEnergyAboveMaxEnergy()
         {
             var location = new Location();
@@ -918,7 +909,36 @@ namespace Seed.Tests
 
             player.Drink(water);
 
-            Assert.That(player.Energy, Is.EqualTo(player.MaxEnergy));
+            player.Energy.Should().Be(player.MaxEnergy);
+        }
+
+        [TestCase(40)]
+        [TestCase(30)]
+        [Category("Player.Attack")]
+        public void DefenderShouldBeDeadIfPlayerHasStrengthLargerOrEqualToSumOfDefendersArmorAndHP(int defenderHP)
+        {
+            var location = new Location();
+            var player = new Player(strength: 50, presentLocation: location);
+            var defender = new Human(armor: 10, hp: defenderHP, presentLocation: location);
+
+            player.Attack(defender);
+
+            Battle.Garbage.Should().Contain(defender);
+        }
+
+        [Test]
+        [Category("Player.Move")]
+        public void ShouldNotMoveIfTargetLocationIsNull([Values]Direction moveDirection)
+        {
+            var location = new Location();
+            location.ChangeDoorState(moveDirection, DoorState.Open);
+            var player=new Player(presentLocation:location);
+            StringWriter swr=new StringWriter();
+            Console.SetOut(swr);
+
+            player.Move(moveDirection);
+
+            swr.ToString().Should().Be("Nie możesz tam iść.\r\n");
         }
     }
 }

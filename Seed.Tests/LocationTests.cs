@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Seed.Characters;
 using Seed.Locations;
+using FluentAssertions;
 
 namespace Seed.Tests
 {
@@ -11,18 +12,19 @@ namespace Seed.Tests
     class LocationTests
     {
         [Test]
+        [Category("Location.Constructor")]
         public void ShouldHaveAllDirectionsClosedAndNullAfterNoParametersConstructor()
         {
             Location location = new Location();
 
             var direction = new Door(DoorState.Closed, null);
 
-            Assert.That(location.North, Is.EqualTo(direction));
-            Assert.That(location.South, Is.EqualTo(direction));
-            Assert.That(location.East, Is.EqualTo(direction));
-            Assert.That(location.West, Is.EqualTo(direction));
-            Assert.That(location.Up, Is.EqualTo(direction));
-            Assert.That(location.Down, Is.EqualTo(direction));
+            location.North.Should().Be(direction);
+            location.South.Should().Be(direction);
+            location.East.Should().Be(direction);
+            location.West.Should().Be(direction);
+            location.Up.Should().Be(direction);
+            location.Down.Should().Be(direction);
         }
 
         [Test]
@@ -34,7 +36,7 @@ namespace Seed.Tests
 
             player.Move(Direction.South);
 
-            Assert.That(player.presentLocation, Is.EqualTo(location2));
+            player.presentLocation.Should().Be(location2);
         }
 
         [TestCase(DoorState.Open, DoorState.Closed)]
@@ -46,21 +48,23 @@ namespace Seed.Tests
         [TestCase(DoorState.Open, DoorState.Open)]
         [TestCase(DoorState.Closed, DoorState.Closed)]
         [TestCase(DoorState.Hidden, DoorState.Hidden)]
+        [Category("Location.ChangeDoorState")]
         public void ShouldChangeStateOfDoor(DoorState Before, DoorState After)
         {
             Location location1 = new Location();
             Location location2 = new Location(parentDirection: Direction.North, parentLocation: location1,
                 fromParentDoorState: Before);
 
-            location1.ChancheDoorState(Direction.South, After);
+            location1.ChangeDoorState(Direction.South, After);
 
-            Assert.That(location1.South.isOpen, Is.EqualTo(After));
+            location1.South.isOpen.Should().Be(After);
         }
 
         [Test]
+        [Category("Location.CreateDoor")]
         public void ShouldCreatePassageBetweenLocations(
             [Values]Direction targetLocationDirection,
-            [Values]DoorState fromHereDoorState, 
+            [Values]DoorState fromHereDoorState,
             [Values]DoorState fromThereDoorState)
         {
             var location1 = new Location();
@@ -72,45 +76,42 @@ namespace Seed.Tests
             {
                 case Direction.North:
                     {
-                        Assert.That(location1.North.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.South.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.North.isOpen.Should().Be(fromHereDoorState);
+                        location2.South.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
                 case Direction.South:
                     {
-                        Assert.That(location1.South.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.North.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.South.isOpen.Should().Be(fromHereDoorState);
+                        location2.North.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
                 case Direction.East:
                     {
-                        Assert.That(location1.East.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.West.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.East.isOpen.Should().Be(fromHereDoorState);
+                        location2.West.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
                 case Direction.West:
                     {
-                        Assert.That(location1.West.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.East.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.West.isOpen.Should().Be(fromHereDoorState);
+                        location2.East.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
                 case Direction.Up:
                     {
-                        Assert.That(location1.Up.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.Down.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.Up.isOpen.Should().Be(fromHereDoorState);
+                        location2.Down.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
                 case Direction.Down:
                     {
-                        Assert.That(location1.Down.isOpen, Is.EqualTo(fromHereDoorState));
-                        Assert.That(location2.Up.isOpen, Is.EqualTo(fromThereDoorState));
-                        break;
+                        location1.Down.isOpen.Should().Be(fromHereDoorState);
+                        location2.Up.isOpen.Should().Be(fromThereDoorState);
                     }
+                    break;
             }
 
         }
-
-
-
     }
 }

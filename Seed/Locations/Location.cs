@@ -80,7 +80,7 @@ namespace Seed.Locations
             }
         }
 
-        public void ChancheDoorState(Direction direction, DoorState wantedState)
+        public void ChangeDoorState(Direction direction, DoorState wantedState)
         {
             switch (direction)
             {

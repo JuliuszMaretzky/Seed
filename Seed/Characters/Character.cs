@@ -79,7 +79,7 @@ namespace Seed.Characters
                 this.Armor += addArmor;
                 this.Damage += addDamage;
             }
-            
+
         }
 
         private uint GreaterDamage(uint damage, Weapon item)
