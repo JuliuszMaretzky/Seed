@@ -23,34 +23,7 @@ namespace Seed.Tests
             poorKitten.FollowedCharacter.Should().NotBeNull();
             poorKitten.StepsRemaining.Should().BeGreaterThan(0);
         }
-
-        [Test]
-        [Category("DomesticAnimal.Follow")]
-        public void ShouldNotChangeFollowedCharacter()
-        {
-            var location1 = new Location();
-            var location2 = new Location(parentDirection: Direction.North, parentLocation: location1);
-            var location3=new Location(parentDirection:Direction.Down, parentLocation:location2);
-            var someGuy=new Human(presentLocation:location1);
-            var anotherGuy=new Human(presentLocation:location2);
-            var goodBoi=new DomesticAnimal(presentLocation:location1);
-            goodBoi.ThinkAboutFollowing();
-            goodBoi.StepsRemaining = 4;
-            someGuy.Move(Direction.South);
-            goodBoi.Follow();
-            goodBoi.ThinkAboutFollowing();
-            someGuy.Move(Direction.Up);
-            anotherGuy.Move(Direction.North);
-            goodBoi.Follow();
-
-            someGuy.presentLocation.Should().Be(location3);
-            goodBoi.presentLocation.Should().BeSameAs(someGuy.presentLocation);
-            someGuy.presentLocation.CharactersInLocation.Should().Contain(goodBoi);
-            location1.CharactersInLocation.Should().NotContain(goodBoi);
-            location2.CharactersInLocation.Should().NotContain(goodBoi);
-            goodBoi.FollowedCharacter.Should().NotBe(anotherGuy);
-        }
-
+        
         [Test]
         [Category("DomesticAnimal.Follow")]
         public void ShouldStopFollowIfFollowedCharacterWentTooFar()

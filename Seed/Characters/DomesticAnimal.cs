@@ -56,7 +56,7 @@ namespace Seed.Characters
             {
                 presentLocation.CharactersInLocation.Remove(this);
                 presentLocation = FollowedCharacter.presentLocation;
-                FollowedCharacter.presentLocation.CharactersInLocation.Add(this);
+                presentLocation.CharactersInLocation.Add(this);
                 StepsRemaining--;
                 if (StepsRemaining == 0)
                 {
