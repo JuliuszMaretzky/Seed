@@ -87,7 +87,7 @@ namespace Seed.Characters
         {
             if (character is Player)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"{Name} atakuje cię!");
                 System.Threading.Thread.Sleep(500);
 

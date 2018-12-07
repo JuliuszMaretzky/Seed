@@ -52,69 +52,11 @@ namespace Seed.Scenarios
                 Console.ForegroundColor = ConsoleColor.DarkMagenta;
                 Console.WriteLine($"{foe.Name} HP:{foe.HP}");
                 Console.ForegroundColor = ConsoleColor.White;
-                var r = new Random();
-                var success = (byte)(r.Next(0, 10) % 3);
-                uint dmgGiven;
 
-                if (success > 0)
-                {
-                    dmgGiven = playerDamage - (uint)(Math.Pow(-1, success) * playerDamage);
-
-                    if (dmgGiven > foeStartFightHP * 0.7)
-                        Console.Write("Twój cios miażdży ");
-                    else if (dmgGiven > foeStartFightHP * 0.6)
-                        Console.Write("Twoje uderzenie dewastuje ");
-                    else if (dmgGiven > foeStartFightHP * 0.5)
-                        Console.Write("Twoje uderzenie masakruje ");
-                    else if (dmgGiven > foeStartFightHP * 0.4)
-                        Console.Write("Twoje trafienie grzmoci ");
-                    else if (dmgGiven > foeStartFightHP * 0.3)
-                        Console.Write("Twój kopniak tłucze ");
-                    else if (dmgGiven > foeStartFightHP * 0.2)
-                        Console.Write("Twój trafienie trzepie ");
-                    else if (dmgGiven > foeStartFightHP * 0.1)
-                        Console.Write("Twój plaskacz muska ");
-                    else
-                        Console.Write("Twój piruet głaszcze ");
-                    Console.WriteLine(foe.Name + "!");
-                    foe.HP -= (int)dmgGiven;
-
-                    if (foe.HP == 0)
-                        break;
-                }
-                else
-                {
-                    Console.Write("Nie trafiasz!");
-                }
-
-                success = (byte)(r.Next(0, 10) % 3);
-                if (success > 0)
-                {
-                    dmgGiven = foeDamage - (uint)(Math.Pow(-1, success) * foeDamage);
-
-                    if (dmgGiven > foeStartFightHP * 0.7)
-                        Console.WriteLine($"{foe.Name} ciosem miażdży ciebie!");
-                    else if (dmgGiven > playerStartFightHP * 0.6)
-                        Console.WriteLine($"Uderzenie {foe.Name} dewastuje cię!");
-                    else if (dmgGiven > playerStartFightHP * 0.5)
-                        Console.WriteLine($"Uderzenie {foe.Name} masakruje cię!");
-                    else if (dmgGiven > playerStartFightHP * 0.4)
-                        Console.WriteLine($"{foe.Name} trafia cię i grzmoci twój pysk!");
-                    else if (dmgGiven > playerStartFightHP * 0.3)
-                        Console.WriteLine($"{foe.Name} tłucze cię kopniakiem!");
-                    else if (dmgGiven > playerStartFightHP * 0.2)
-                        Console.WriteLine($"{foe.Name} trzepie cię w ucho!");
-                    else if (dmgGiven > playerStartFightHP * 0.1)
-                        Console.WriteLine($"Obrywasz od {foe.Name} z plaskacza!");
-                    else
-                        Console.WriteLine($"{foe.Name} ledwie cię muska!");
-                    player.HP -= (int)dmgGiven;
-
-                }
-                else
-                {
-                    Console.WriteLine($"{foe.Name} nie trafia!");
-                }
+                foe.HP -= PlayerPunch(playerDamage, foeStartFightHP, foe.Name);
+                if (foe.HP == 0)
+                    break;
+                player.HP -= FoePunch(foeDamage, playerStartFightHP, foe.Name);
 
                 System.Threading.Thread.Sleep(900);
             } while (player.HP > 0 && foe.HP > 0);
@@ -131,6 +73,67 @@ namespace Seed.Scenarios
                 Console.WriteLine($"Zabiłeś {foe.Name}!");
                 CleanTheMess(foe);
             }
+        }
+
+        private static int PlayerPunch(uint playerDamage, int foeStartFightHP, string foeName)
+        {
+            var success = new Random().Next(0, 10) % 3;
+
+            if (success == 0)
+            {
+                Console.WriteLine("Nie trafiasz!");
+                return 0;
+            }
+
+            if (playerDamage > foeStartFightHP * 0.7)
+                Console.Write("Twój cios miażdży ");
+            else if (playerDamage > foeStartFightHP * 0.6)
+                Console.Write("Twoje uderzenie dewastuje ");
+            else if (playerDamage > foeStartFightHP * 0.5)
+                Console.Write("Twoje uderzenie masakruje ");
+            else if (playerDamage > foeStartFightHP * 0.4)
+                Console.Write("Twoje trafienie grzmoci ");
+            else if (playerDamage > foeStartFightHP * 0.3)
+                Console.Write("Twój kopniak tłucze ");
+            else if (playerDamage > foeStartFightHP * 0.2)
+                Console.Write("Twój trafienie trzepie ");
+            else if (playerDamage > foeStartFightHP * 0.1)
+                Console.Write("Twój plaskacz muska ");
+            else
+                Console.Write("Twój piruet głaszcze ");
+            Console.WriteLine(foeName + "!");
+
+            return (int)playerDamage;
+        }
+
+        private static int FoePunch(uint foeDamage, int playerStartFightHP, string foeName)
+        {
+            var success = new Random().Next(0, 10) % 3;
+
+            if (success == 0)
+            {
+                Console.WriteLine($"{foeName} nie trafia!");
+                return 0;
+            }
+
+            if (foeDamage > playerStartFightHP * 0.7)
+                Console.WriteLine($"{foeName} ciosem miażdży ciebie!");
+            else if (foeDamage > playerStartFightHP * 0.6)
+                Console.WriteLine($"Uderzenie {foeName} dewastuje cię!");
+            else if (foeDamage > playerStartFightHP * 0.5)
+                Console.WriteLine($"Uderzenie {foeName} masakruje cię!");
+            else if (foeDamage > playerStartFightHP * 0.4)
+                Console.WriteLine($"{foeName} trafia cię i grzmoci twój pysk!");
+            else if (foeDamage > playerStartFightHP * 0.3)
+                Console.WriteLine($"{foeName} tłucze cię kopniakiem!");
+            else if (foeDamage > playerStartFightHP * 0.2)
+                Console.WriteLine($"{foeName} trzepie cię w ucho!");
+            else if (foeDamage > playerStartFightHP * 0.1)
+                Console.WriteLine($"Obrywasz od {foeName} z plaskacza!");
+            else
+                Console.WriteLine($"{foeName} ledwie cię muska!");
+
+            return (int)foeDamage;
         }
 
         public static Tuple<uint, uint> ComputeDamage(Character fighter1, Character fighter2)
