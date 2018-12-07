@@ -49,7 +49,9 @@ namespace Seed.Characters
                 CanFollowFollowedCharacter(presentLocation.Up, FollowedCharacter.presentLocation) ||
                 CanFollowFollowedCharacter(presentLocation.Down, FollowedCharacter.presentLocation))
             {
+                presentLocation.CharactersInLocation.Remove(this);
                 presentLocation = FollowedCharacter.presentLocation;
+                FollowedCharacter.presentLocation.CharactersInLocation.Add(this);
                 StepsRemaining--;
                 if (StepsRemaining == 0)
                 {

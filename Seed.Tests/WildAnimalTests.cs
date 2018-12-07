@@ -46,6 +46,8 @@ namespace Seed.Tests
             hunter.Follow();
 
             hunter.presentLocation.Should().BeSameAs(human.presentLocation);
+            human.presentLocation.CharactersInLocation.Should().Contain(hunter);
+            location1.CharactersInLocation.Should().NotContain(hunter);
         }
 
         [Test]
@@ -68,6 +70,7 @@ namespace Seed.Tests
 
             someGuy.presentLocation.Should().Be(location4);
             badBoi.presentLocation.Should().Be(location2);
+            location2.CharactersInLocation.Should().Contain(badBoi);
             badBoi.IsFollowing.Should().Be(false);
             badBoi.FollowedCharacter.Should().Be(null);
             badBoi.StepsRemaining.Should().Be(0);

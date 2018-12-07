@@ -45,6 +45,9 @@ namespace Seed.Tests
 
             someGuy.presentLocation.Should().Be(location3);
             goodBoi.presentLocation.Should().BeSameAs(someGuy.presentLocation);
+            someGuy.presentLocation.CharactersInLocation.Should().Contain(goodBoi);
+            location1.CharactersInLocation.Should().NotContain(goodBoi);
+            location2.CharactersInLocation.Should().NotContain(goodBoi);
             goodBoi.FollowedCharacter.Should().NotBe(anotherGuy);
         }
 
@@ -68,6 +71,7 @@ namespace Seed.Tests
 
             someGuy.presentLocation.Should().Be(location4);
             goodBoi.presentLocation.Should().Be(location2);
+            location2.CharactersInLocation.Should().Contain(goodBoi);
             goodBoi.IsFollowing.Should().Be(false);
             goodBoi.FollowedCharacter.Should().Be(null);
             goodBoi.StepsRemaining.Should().Be(0);
@@ -117,6 +121,7 @@ namespace Seed.Tests
             cockatoo.StepsRemaining.Should().Be(0);
             cockatoo.IsFollowing.Should().Be(false);
             cockatoo.presentLocation.Should().Be(location3);
+            location3.CharactersInLocation.Should().Contain(cockatoo);
         }
 
         [Test]
