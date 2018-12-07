@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Seed.Characters;
 using Seed.Items;
 
@@ -80,6 +78,9 @@ namespace Seed.Locations
             //4
             NPCs.Add(new DomesticAnimal("Kot Filemon", "łasi się namolnie.", "Domowy futrzak wykarmiony na tłustej" +
                  "kupnej karmie", 1, 1, 0, Locations[8]));
+            //5
+            NPCs.Add(new WildAnimal("Komar", "poluje na kawałek skóry.", "Mały, bzyczący, irytujący.", 1, 1, 0, 
+                Locations[1]));
 
 
             //Here stack of Items begins

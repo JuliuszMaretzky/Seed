@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Seed.Characters
+﻿namespace Seed.Characters
 {
     public interface IFollow
     {

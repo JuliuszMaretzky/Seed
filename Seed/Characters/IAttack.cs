@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Seed.Locations;
-
-namespace Seed.Characters
+﻿namespace Seed.Characters
 {
     public interface IAttack
     {

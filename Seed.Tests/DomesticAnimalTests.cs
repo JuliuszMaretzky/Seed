@@ -38,7 +38,9 @@ namespace Seed.Tests
             goodBoi.StepsRemaining = 4;
             someGuy.Move(Direction.South);
             goodBoi.Follow();
+            goodBoi.ThinkAboutFollowing();
             someGuy.Move(Direction.Up);
+            anotherGuy.Move(Direction.North);
             goodBoi.Follow();
 
             someGuy.presentLocation.Should().Be(location3);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Seed.Items;
 using Seed.Locations;
 
@@ -41,16 +40,16 @@ namespace Seed.Characters
         public Character(string name, string description, string overview, int hp, uint strength, uint armor,
             Location presentLocation)
         {
-            this.Name = name;
-            this.HP = this.MaxHP = hp;
-            this.Strength = strength;
-            this.Damage = 3 * strength;
-            this.Armor = armor;
+            Name = name;
+            HP = MaxHP = hp;
+            Strength = strength;
+            Damage = 3 * strength;
+            Armor = armor;
             this.presentLocation = presentLocation;
             presentLocation.CharactersInLocation.Add(this);
-            this.Description = description;
-            this.Overview = overview;
-            this.Inventory = new List<Item>();
+            Description = description;
+            Overview = overview;
+            Inventory = new List<Item>();
         }
 
         public void ReceiveItems(List<Item> items)
@@ -59,43 +58,34 @@ namespace Seed.Characters
             {
                 throw new Exception("To nie jest metoda dla gracza!");
             }
-            else
+
+            uint addDamage = 0, addArmor = 0;
+            Inventory.AddRange(items);
+
+            foreach (var item in items)
             {
-                uint addDamage = 0, addArmor = 0;
-                this.Inventory.AddRange(items);
-
-                foreach (var item in items)
+                if (item is Weapon)
                 {
-                    if (item is Weapon)
-                    {
-                        addDamage = GreaterDamage(addDamage, (Weapon)item);
-                    }
-                    else if (item is Armor)
-                    {
-                        addArmor = GreaterArmor(addArmor, (Armor)item);
-                    }
+                    addDamage = GreaterDamage(addDamage, (Weapon)item);
                 }
-
-                this.Armor += addArmor;
-                this.Damage += addDamage;
+                else if (item is Armor)
+                {
+                    addArmor = GreaterArmor(addArmor, (Armor)item);
+                }
             }
 
+            Armor += addArmor;
+            Damage += addDamage;
         }
 
         private uint GreaterDamage(uint damage, Weapon item)
         {
-            if (item.Damage > damage)
-                return item.Damage;
-            else
-                return damage;
+            return item.Damage > damage ? item.Damage : damage;
         }
 
         private uint GreaterArmor(uint armor, Armor item)
         {
-            if (item.Toughness > armor)
-                return item.Toughness;
-            else
-                return armor;
+            return item.Toughness > armor ? item.Toughness : armor;
         }
     }
 }

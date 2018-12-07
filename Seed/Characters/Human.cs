@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Seed.Locations;
 using Seed.Scenarios;
 
@@ -17,8 +15,8 @@ namespace Seed.Characters
             bool isLazy = true, bool isAggressive = false) :
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
-            this.IsAggressive = isAggressive;
-            this.IsLazy = isLazy;
+            IsAggressive = isAggressive;
+            IsLazy = isLazy;
         }
 
         public void Move(Direction direction)
@@ -38,7 +36,7 @@ namespace Seed.Characters
                     if (presentLocation.North.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.North.Location;
+                        presentLocation = presentLocation.North.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
@@ -46,7 +44,7 @@ namespace Seed.Characters
                     if (presentLocation.South.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.South.Location;
+                        presentLocation = presentLocation.South.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
@@ -54,7 +52,7 @@ namespace Seed.Characters
                     if (presentLocation.East.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.East.Location;
+                        presentLocation = presentLocation.East.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
@@ -62,7 +60,7 @@ namespace Seed.Characters
                     if (presentLocation.West.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.West.Location;
+                        presentLocation = presentLocation.West.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
@@ -70,7 +68,7 @@ namespace Seed.Characters
                     if (presentLocation.Up.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Up.Location;
+                        presentLocation = presentLocation.Up.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
@@ -78,11 +76,9 @@ namespace Seed.Characters
                     if (presentLocation.Down.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Down.Location;
+                        presentLocation = presentLocation.Down.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
-                    break;
-                default:
                     break;
             }
         }
@@ -92,12 +88,12 @@ namespace Seed.Characters
             if (character is Player)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"{this.Name} atakuje cię!");
+                Console.WriteLine($"{Name} atakuje cię!");
                 System.Threading.Thread.Sleep(500);
 
                 if (new Random().Next(0, 2) > 0)
                 {
-                    character.HP -= (int)(this.Strength - character.Armor);
+                    character.HP -= (int)(Strength - character.Armor);
                 }
 
                 if (character.HP > 0)
@@ -111,7 +107,6 @@ namespace Seed.Characters
                     Console.Read();
                     Environment.Exit(0);
                 }
-
             }
             else
             {

@@ -1,35 +1,39 @@
 ﻿using System;
+using System.Linq;
 using Seed.Locations;
+using Seed.Scenarios;
 
 namespace Seed.Characters
 {
-    public class DomesticAnimal : Character, IFollow
+    public class WildAnimal:Character, IFollow
     {
         public bool IsFollowing { get; private set; }
         public uint StepsRemaining { get; set; }
         public Character FollowedCharacter { get; private set; }
 
-        public DomesticAnimal(string name = "Sierściuch", string description = "szuka jakichś śmieci do zjedzenia.",
-            string overview = "Zwykły wypłosz, jakich pełno po miastach i wsiach.", int hp = 2, uint strength = 1,
-            uint armor = 0, Location presentLocation = null) :
+        public WildAnimal(string name="Szczur", string description="drapie się po zaropiałych ranach.", 
+            string overview="Pewnie przenosi więcej chorób niż ty masz włosów na głowie.", 
+            int hp=3, uint strength=1, uint armor=5, Location presentLocation=null) : 
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
             IsFollowing = false;
             StepsRemaining = 0;
             FollowedCharacter = null;
         }
-
+        
         public void ThinkAboutFollowing()
         {
-            if (IsFollowing == false && presentLocation.CharactersInLocation.Count > 1)
+            var characterToFollow=
+                from characters in presentLocation.CharactersInLocation
+                where characters.HP>0 && characters!=this
+                orderby characters.HP
+                select characters;
+
+            if (characterToFollow.Any())
             {
-                foreach (var character in presentLocation.CharactersInLocation)
-                {
-                    if (character == this || character.HP == 0) continue;
-                    FollowedCharacter = character;
-                    IsFollowing = true;
-                    StepsRemaining = (uint)(new Random().Next(1, 11));
-                }
+                FollowedCharacter = characterToFollow.First();
+                StepsRemaining=(uint)new Random().Next(1,5);
+                IsFollowing = true;
             }
         }
 
@@ -53,8 +57,10 @@ namespace Seed.Characters
                 StepsRemaining--;
                 if (StepsRemaining == 0)
                 {
+                    var defender = FollowedCharacter;
                     IsFollowing = false;
                     FollowedCharacter = null;
+                    Battle.Fight(this, defender);
                 }
             }
             else
