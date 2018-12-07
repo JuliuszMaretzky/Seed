@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Seed.Locations;
 
 namespace Seed.Characters
@@ -21,15 +22,19 @@ namespace Seed.Characters
 
         public void ThinkAboutFollowing()
         {
-            if (IsFollowing == false && presentLocation.CharactersInLocation.Count > 1)
+            var characterToFollow =
+                from characters in presentLocation.CharactersInLocation
+                where characters != this
+                      && characters.HP > 0
+                      && ((characters is IMove) || (characters is Player))
+                orderby characters.HP
+                select characters;
+
+            if (characterToFollow.Any())
             {
-                foreach (var character in presentLocation.CharactersInLocation)
-                {
-                    if (character == this || character.HP == 0) continue;
-                    FollowedCharacter = character;
-                    IsFollowing = true;
-                    StepsRemaining = (uint)(new Random().Next(1, 11));
-                }
+                FollowedCharacter = characterToFollow.First();
+                StepsRemaining = (uint)new Random().Next(1, 11);
+                IsFollowing = true;
             }
         }
 

@@ -5,34 +5,36 @@ using Seed.Scenarios;
 
 namespace Seed.Characters
 {
-    public class WildAnimal:Character, IFollow
+    public class WildAnimal : Character, IFollow
     {
         public bool IsFollowing { get; private set; }
         public uint StepsRemaining { get; set; }
         public Character FollowedCharacter { get; private set; }
 
-        public WildAnimal(string name="Szczur", string description="drapie się po zaropiałych ranach.", 
-            string overview="Pewnie przenosi więcej chorób niż ty masz włosów na głowie.", 
-            int hp=3, uint strength=1, uint armor=5, Location presentLocation=null) : 
+        public WildAnimal(string name = "Szczur", string description = "drapie się po zaropiałych ranach.",
+            string overview = "Pewnie przenosi więcej chorób niż ty masz włosów na głowie.",
+            int hp = 3, uint strength = 1, uint armor = 5, Location presentLocation = null) :
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
             IsFollowing = false;
             StepsRemaining = 0;
             FollowedCharacter = null;
         }
-        
+
         public void ThinkAboutFollowing()
         {
-            var characterToFollow=
+            var characterToFollow =
                 from characters in presentLocation.CharactersInLocation
-                where characters.HP>0 && characters!=this
+                where characters != this 
+                      && characters.HP > 0 
+                      && ((characters is IMove) || (characters is Player))
                 orderby characters.HP
                 select characters;
 
             if (characterToFollow.Any())
             {
                 FollowedCharacter = characterToFollow.First();
-                StepsRemaining=(uint)new Random().Next(1,5);
+                StepsRemaining = (uint)new Random().Next(1, 5);
                 IsFollowing = true;
             }
         }
@@ -59,10 +61,16 @@ namespace Seed.Characters
                 StepsRemaining--;
                 if (StepsRemaining == 0)
                 {
-                    var defender = FollowedCharacter;
+                    if (FollowedCharacter is Player)
+                    {
+                        Battle.Fight((Player)FollowedCharacter, this);
+                    }
+                    else
+                    {
+                        Battle.Fight(this, FollowedCharacter);
+                    }
                     IsFollowing = false;
                     FollowedCharacter = null;
-                    Battle.Fight(this, defender);
                 }
             }
             else
