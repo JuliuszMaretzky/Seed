@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.XPath;
 using Seed.Characters;
 using Seed.Items;
 
@@ -79,7 +80,7 @@ namespace Seed.Locations
                 }
             }
         }
-
+        
         public void ChangeDoorState(Direction direction, DoorState wantedState)
         {
             switch (direction)
