@@ -35,7 +35,7 @@ namespace Seed.Scenarios
             }
             if (defender.HP == 0)
             {
-                CleanTheMess(attacker);
+                CleanTheMess(defender);
             }
 
         }
@@ -75,7 +75,7 @@ namespace Seed.Scenarios
                     else if (dmgGiven > foeStartFightHP * 0.1)
                         Console.Write("Twój plaskacz muska ");
                     else
-                        Console.WriteLine("Twój piruet głaszcze ");
+                        Console.Write("Twój piruet głaszcze ");
                     Console.WriteLine(foe.Name + "!");
                     foe.HP -= (int)dmgGiven;
 
@@ -84,7 +84,7 @@ namespace Seed.Scenarios
                 }
                 else
                 {
-                    Console.WriteLine("Nie trafiasz!");
+                    Console.Write("Nie trafiasz!");
                 }
 
                 success = (byte)(r.Next(0, 10) % 3);
@@ -95,19 +95,19 @@ namespace Seed.Scenarios
                     if (dmgGiven > foeStartFightHP * 0.7)
                         Console.WriteLine($"{foe.Name} ciosem miażdży ciebie!");
                     else if (dmgGiven > playerStartFightHP * 0.6)
-                        Console.Write($"Uderzenie {foe.Name} dewastuje cię!");
+                        Console.WriteLine($"Uderzenie {foe.Name} dewastuje cię!");
                     else if (dmgGiven > playerStartFightHP * 0.5)
-                        Console.Write($"Uderzenie {foe.Name} masakruje cię!");
+                        Console.WriteLine($"Uderzenie {foe.Name} masakruje cię!");
                     else if (dmgGiven > playerStartFightHP * 0.4)
-                        Console.Write($"{foe.Name} trafia cię i grzmoci twój pysk!");
+                        Console.WriteLine($"{foe.Name} trafia cię i grzmoci twój pysk!");
                     else if (dmgGiven > playerStartFightHP * 0.3)
-                        Console.Write($"{foe.Name} tłucze cię kopniakiem!");
+                        Console.WriteLine($"{foe.Name} tłucze cię kopniakiem!");
                     else if (dmgGiven > playerStartFightHP * 0.2)
-                        Console.Write($"{foe.Name} trzepie cię w ucho!");
+                        Console.WriteLine($"{foe.Name} trzepie cię w ucho!");
                     else if (dmgGiven > playerStartFightHP * 0.1)
-                        Console.Write($"Obrywasz od {foe.Name} z plaskacza!");
+                        Console.WriteLine($"Obrywasz od {foe.Name} z plaskacza!");
                     else
-                        Console.Write($"{foe.Name} ledwie cię muska!");
+                        Console.WriteLine($"{foe.Name} ledwie cię muska!");
                     player.HP -= (int)dmgGiven;
 
                 }

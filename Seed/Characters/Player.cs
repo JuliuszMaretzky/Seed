@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Seed.Items;
 using Seed.Locations;
@@ -52,22 +51,22 @@ namespace Seed.Characters
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
             if (name == String.Empty)
-                this.Name = "Bezimienny";
+                Name = "Bezimienny";
             else
-                this.Name = name;
+                Name = name;
 
-            this.Energy = this.MaxEnergy = energy;
-            this.CarryingCapacity = (uint)strength * 3;
-            this.WornItems = new List<Item>();
-            this.FamiliarSpirit = familiarSpirit;
+            Energy = MaxEnergy = energy;
+            CarryingCapacity = (uint)strength * 3;
+            WornItems = new List<Item>();
+            FamiliarSpirit = familiarSpirit;
 
-            this.Burden = 0;
-            foreach (var item in this.Inventory)
-                this.Burden += item.Weight;
-            foreach (var item in this.WornItems)
-                this.Burden += item.Weight;
+            Burden = 0;
+            foreach (var item in Inventory)
+                Burden += item.Weight;
+            foreach (var item in WornItems)
+                Burden += item.Weight;
 
-            if (this.Burden > CarryingCapacity)
+            if (Burden > CarryingCapacity)
                 throw new Exception("Za ciężko!");
         }
 
@@ -75,23 +74,23 @@ namespace Seed.Characters
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (this.Energy == 0)
+            if (Energy == 0)
             {
                 Console.WriteLine("Nie pochodzisz sobie. Musisz odpocząć");
                 return;
             }
 
-            this.Energy -= 3;
+            Energy -= 3;
 
             switch (direction)
             {
                 case Direction.North:
                     {
-                        if (this.presentLocation.North.isOpen != DoorState.Closed &&
-                            this.presentLocation.North.location!=null)
+                        if (presentLocation.North.DoorState != DoorState.Closed &&
+                            presentLocation.North.Location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.North.location;
+                            presentLocation = presentLocation.North.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -102,11 +101,11 @@ namespace Seed.Characters
                     break;
                 case Direction.South:
                     {
-                        if (this.presentLocation.South.isOpen != DoorState.Closed &&
-                            this.presentLocation.South.location != null)
+                        if (presentLocation.South.DoorState != DoorState.Closed &&
+                            presentLocation.South.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.South.location;
+                            presentLocation = presentLocation.South.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -117,11 +116,11 @@ namespace Seed.Characters
                     break;
                 case Direction.East:
                     {
-                        if (this.presentLocation.East.isOpen != DoorState.Closed && 
-                            this.presentLocation.East.location!=null)
+                        if (presentLocation.East.DoorState != DoorState.Closed && 
+                            presentLocation.East.Location!=null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.East.location;
+                            presentLocation = presentLocation.East.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -132,11 +131,11 @@ namespace Seed.Characters
                     break;
                 case Direction.West:
                     {
-                        if (this.presentLocation.West.isOpen != DoorState.Closed &&
-                            this.presentLocation.West.location != null)
+                        if (presentLocation.West.DoorState != DoorState.Closed &&
+                            presentLocation.West.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.West.location;
+                            presentLocation = presentLocation.West.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -147,11 +146,11 @@ namespace Seed.Characters
                     break;
                 case Direction.Up:
                     {
-                        if (this.presentLocation.Up.isOpen != DoorState.Closed &&
-                            this.presentLocation.Up.location != null)
+                        if (presentLocation.Up.DoorState != DoorState.Closed &&
+                            presentLocation.Up.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.Up.location;
+                            presentLocation = presentLocation.Up.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -162,11 +161,11 @@ namespace Seed.Characters
                     break;
                 case Direction.Down:
                     {
-                        if (this.presentLocation.Down.isOpen != DoorState.Closed &&
-                            this.presentLocation.Down.location != null)
+                        if (presentLocation.Down.DoorState != DoorState.Closed &&
+                            presentLocation.Down.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
-                            this.presentLocation = this.presentLocation.Down.location;
+                            presentLocation = presentLocation.Down.Location;
                             presentLocation.CharactersInLocation.Add(this);
                         }
                         else
@@ -189,83 +188,47 @@ namespace Seed.Characters
             switch (direction)
             {
                 case Direction.North:
-                    {
-                        if (this.presentLocation.North.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.North.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.North.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.North.Location;
+                    return true;
 
-                    }
+                }
                 case Direction.South:
-                    {
-                        if (this.presentLocation.South.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.South.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.South.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.South.Location;
+                    return true;
 
-                    }
+                }
                 case Direction.East:
-                    {
-                        if (this.presentLocation.East.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.East.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.East.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.East.Location;
+                    return true;
 
-                    }
+                }
                 case Direction.West:
-                    {
-                        if (this.presentLocation.West.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.West.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.West.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.West.Location;
+                    return true;
 
-                    }
+                }
                 case Direction.Up:
-                    {
-                        if (this.presentLocation.Up.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.Up.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.Up.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.Up.Location;
+                    return true;
 
-                    }
+                }
                 case Direction.Down:
-                    {
-                        if (this.presentLocation.Down.isOpen == DoorState.Open)
-                        {
-                            this.presentLocation = this.presentLocation.Down.location;
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                {
+                    if (presentLocation.Down.DoorState != DoorState.Open) return false;
+                    presentLocation = presentLocation.Down.Location;
+                    return true;
 
-                    }
+                }
                 default:
                     return false;
             }
@@ -275,11 +238,11 @@ namespace Seed.Characters
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (!(this.Burden + item.Weight > this.CarryingCapacity))
+            if (!(Burden + item.Weight > CarryingCapacity))
             {
-                this.Inventory.Add(item);
-                this.presentLocation.Stack.Remove(item);
-                this.Burden += item.Weight;
+                Inventory.Add(item);
+                presentLocation.Stack.Remove(item);
+                Burden += item.Weight;
                 Console.WriteLine($"Podnosisz {item.Name}.");
             }
             else
@@ -293,9 +256,9 @@ namespace Seed.Characters
         public void PutAway(Item item)
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            this.presentLocation.Stack.Add(item);
-            this.Inventory.Remove(item);
-            this.Burden -= item.Weight;
+            presentLocation.Stack.Add(item);
+            Inventory.Remove(item);
+            Burden -= item.Weight;
             Console.WriteLine($"Wyrzucasz {item.Name}.");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
@@ -312,17 +275,17 @@ namespace Seed.Characters
             else if (item is Armor)
             {
                 string type = "";
-                foreach (var i in this.WornItems)
+                foreach (var i in WornItems)
                     if (i.GetType() == typeof(Armor) && CheckIfArmorTypeIsTheSame((Armor)item, (Armor)i, ref type))
                     {
                         Console.WriteLine($"Już masz na sobie {type}.");
                         return;
                     }
-                this.IncreaseArmor((Armor)item);
+                IncreaseArmor((Armor)item);
             }
             else if (item is Bag)
             {
-                foreach (var i in this.WornItems)
+                foreach (var i in WornItems)
                     if (i is Bag)
                     {
                         Console.WriteLine("Już masz na sobie torbę.");
@@ -332,35 +295,35 @@ namespace Seed.Characters
             }
             else
             {
-                foreach (var i in this.WornItems)
+                foreach (var i in WornItems)
                     if (i is Weapon)
                     {
                         Console.WriteLine("Już trzymasz broń.");
                         return;
                     }
-                this.IncreaseDamage((Weapon)item);
+                IncreaseDamage((Weapon)item);
             }
 
-            this.WornItems.Add(item);
-            this.Inventory.Remove(item);
-            this.Burden -= item.Weight;
+            WornItems.Add(item);
+            Inventory.Remove(item);
+            Burden -= item.Weight;
             Console.WriteLine($"Zakładasz na siebie {item.Name}.");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private void IncreaseDamage(Weapon weapon)
         {
-            this.Damage += weapon.Damage;
+            Damage += weapon.Damage;
         }
 
         private void IncreaseArmor(Armor armor)
         {
-            this.Armor += armor.Toughness;
+            Armor += armor.Toughness;
         }
 
         private void IncreaseCarryingCapacity(Bag bag)
         {
-            this.CarryingCapacity += bag.CarryingCapacity;
+            CarryingCapacity += bag.CarryingCapacity;
         }
 
         private bool CheckIfArmorTypeIsTheSame(Armor itemToWear, Armor itemWorn, ref string type)
@@ -391,8 +354,8 @@ namespace Seed.Characters
 
                 return true;
             }
-            else
-                return false;
+
+            return false;
         }
 
         public void TakeOff(Item item)
@@ -402,10 +365,10 @@ namespace Seed.Characters
             if (item is Bag)
             {
                 ReduceCarryingCapacity((Bag)item);
-                while (this.Burden > this.CarryingCapacity)
+                while (Burden > CarryingCapacity)
                 {
-                    var _lighest = from i in this.Inventory
-                                   orderby i.Weight ascending
+                    var _lighest = from i in Inventory
+                                   orderby i.Weight
                                    select i;
                     var lighest = _lighest.First();
                     Console.WriteLine("Jest ci ciężko, musisz coś zrzucić.");
@@ -414,24 +377,24 @@ namespace Seed.Characters
             }
             else if (item is Armor)
             {
-                this.ReduceArmor((Armor)item);
+                ReduceArmor((Armor)item);
             }
             else if (item is Weapon)
             {
-                this.ReduceDamage((Weapon)item);
+                ReduceDamage((Weapon)item);
             }
 
-            if (item.Weight + this.Burden <= this.CarryingCapacity)
+            if (item.Weight + Burden <= CarryingCapacity)
             {
-                this.Inventory.Add(item);
-                this.WornItems.Remove(item);
-                this.Burden += item.Weight;
+                Inventory.Add(item);
+                WornItems.Remove(item);
+                Burden += item.Weight;
                 Console.WriteLine($"Zdejmujesz z siebie {item.Name}.");
             }
             else
             {
-                this.presentLocation.Stack.Add(item);
-                this.WornItems.Remove(item);
+                presentLocation.Stack.Add(item);
+                WornItems.Remove(item);
                 Console.WriteLine($"To jest zbyt ciężkie! Upuszczasz na ziemię {item.Name}.");
             }
 
@@ -440,22 +403,22 @@ namespace Seed.Characters
 
         private void ReduceDamage(Weapon weapon)
         {
-            this.Damage -= weapon.Damage;
+            Damage -= weapon.Damage;
         }
 
         private void ReduceArmor(Armor armor)
         {
-            this.Armor -= armor.Toughness;
+            Armor -= armor.Toughness;
         }
 
         private void ReduceCarryingCapacity(Bag bag)
         {
-            this.CarryingCapacity -= bag.CarryingCapacity;
+            CarryingCapacity -= bag.CarryingCapacity;
         }
 
         public void Rest()
         {
-            if (this.Energy == this.MaxEnergy)
+            if (Energy == MaxEnergy)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("\nJesteś wypoczęty");
@@ -464,14 +427,14 @@ namespace Seed.Characters
             else
             {
                 Console.WriteLine("\nOdpoczywasz sobie");
-                while (this.Energy != this.MaxEnergy)
+                while (Energy != MaxEnergy)
                 {
                     System.Threading.Thread.Sleep(700);
                     Console.WriteLine(RestSamples[new Random().Next(0, 8)]);
-                    this.Energy += 2;
-                    if (this.Energy >= this.MaxEnergy)
+                    Energy += 2;
+                    if (Energy >= MaxEnergy)
                     {
-                        this.Energy = this.MaxEnergy;
+                        Energy = MaxEnergy;
                     }
                 }
             }
@@ -505,7 +468,7 @@ namespace Seed.Characters
                 Console.WriteLine("umierający.");
 
             Console.WriteLine();
-            var strengthDifference = (int)character.Strength - (int)this.Strength;
+            var strengthDifference = (int)character.Strength - (int)Strength;
 
             if (strengthDifference >= 10)
                 Console.WriteLine("Nie masz szans w walce.");
@@ -524,7 +487,7 @@ namespace Seed.Characters
 
         public void Lookout()
         {
-            this.PrisonForFamiliars = this.FamiliarSpirit.presentLocation;
+            PrisonForFamiliars = FamiliarSpirit.presentLocation;
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\nRozglądasz się i widzisz:");
@@ -538,24 +501,24 @@ namespace Seed.Characters
             LookAtDirection(Direction.West);
             Console.ForegroundColor = ConsoleColor.Gray;
 
-            this.FamiliarSpirit.presentLocation = PrisonForFamiliars;
+            FamiliarSpirit.presentLocation = PrisonForFamiliars;
         }
 
         private void LookAtDirection(Direction direction)
         {
-            this.FamiliarSpirit.presentLocation = this.presentLocation;
+            FamiliarSpirit.presentLocation = presentLocation;
 
-            if (this.FamiliarSpirit.MoveFamiliar(direction))
+            if (FamiliarSpirit.MoveFamiliar(direction))
             {
-                ShowNPCsInLocation(this.FamiliarSpirit, "blisko");
+                ShowNPCsInLocation(FamiliarSpirit, "blisko");
 
-                if (this.FamiliarSpirit.MoveFamiliar(direction))
+                if (FamiliarSpirit.MoveFamiliar(direction))
                 {
-                    ShowNPCsInLocation(this.FamiliarSpirit, "niedaleko");
+                    ShowNPCsInLocation(FamiliarSpirit, "niedaleko");
 
-                    if (this.FamiliarSpirit.MoveFamiliar(direction))
+                    if (FamiliarSpirit.MoveFamiliar(direction))
                     {
-                        ShowNPCsInLocation(this.FamiliarSpirit, "daleko");
+                        ShowNPCsInLocation(FamiliarSpirit, "daleko");
                     }
                 }
             }
@@ -576,7 +539,7 @@ namespace Seed.Characters
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            if (this.Inventory.Count > 0)
+            if (Inventory.Count > 0)
             {
                 Console.WriteLine("\nW swoim ekwpipunku posiadasz:");
                 foreach (var i in this.Inventory)
@@ -592,7 +555,7 @@ namespace Seed.Characters
             if (this.WornItems.Count > 0)
             {
                 Console.WriteLine("\nNa sobie nosisz:");
-                foreach (var i in this.WornItems)
+                foreach (var i in WornItems)
                 {
                     Console.WriteLine(i.Name);
                 }
@@ -608,7 +571,7 @@ namespace Seed.Characters
 
         public void Attack(Character character)
         {
-            character.HP -= (int)(this.Strength - character.Armor);
+            character.HP -= (int)(Strength - character.Armor);
 
             if (character.HP > 0)
             {
@@ -625,16 +588,16 @@ namespace Seed.Characters
         public void Eat(Food food)
         {
             Console.ForegroundColor = ConsoleColor.White;
-            this.HP += (int)food.RestoredHP;
-            this.Inventory.Remove(food);
+            HP += (int)food.RestoredHP;
+            Inventory.Remove(food);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public void Drink(Drink drink)
         {
             Console.ForegroundColor = ConsoleColor.White;
-            this.Energy += (int)drink.RestoredEnergy;
-            this.Inventory.Remove(drink);
+            Energy += (int)drink.RestoredEnergy;
+            Inventory.Remove(drink);
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 

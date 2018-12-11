@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Seed.Locations;
 using Seed.Scenarios;
 
@@ -17,8 +15,8 @@ namespace Seed.Characters
             bool isLazy = true, bool isAggressive = false) :
             base(name, description, overview, hp, strength, armor, presentLocation)
         {
-            this.IsAggressive = isAggressive;
-            this.IsLazy = isLazy;
+            IsAggressive = isAggressive;
+            IsLazy = isLazy;
         }
 
         public void Move(Direction direction)
@@ -35,54 +33,52 @@ namespace Seed.Characters
             switch (direction)
             {
                 case Direction.North:
-                    if (presentLocation.North.isOpen == DoorState.Open)
+                    if (presentLocation.North.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.North.location;
+                        presentLocation = presentLocation.North.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.South:
-                    if (presentLocation.South.isOpen == DoorState.Open)
+                    if (presentLocation.South.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.South.location;
+                        presentLocation = presentLocation.South.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.East:
-                    if (presentLocation.East.isOpen == DoorState.Open)
+                    if (presentLocation.East.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.East.location;
+                        presentLocation = presentLocation.East.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.West:
-                    if (presentLocation.West.isOpen == DoorState.Open)
+                    if (presentLocation.West.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.West.location;
+                        presentLocation = presentLocation.West.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.Up:
-                    if (presentLocation.Up.isOpen == DoorState.Open)
+                    if (presentLocation.Up.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Up.location;
+                        presentLocation = presentLocation.Up.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
                     break;
                 case Direction.Down:
-                    if (presentLocation.Down.isOpen == DoorState.Open)
+                    if (presentLocation.Down.DoorState == DoorState.Open)
                     {
                         presentLocation.CharactersInLocation.Remove(this);
-                        this.presentLocation = presentLocation.Down.location;
+                        presentLocation = presentLocation.Down.Location;
                         presentLocation.CharactersInLocation.Add(this);
                     }
-                    break;
-                default:
                     break;
             }
         }
@@ -91,9 +87,13 @@ namespace Seed.Characters
         {
             if (character is Player)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine($"{Name} atakuje cię!");
+                System.Threading.Thread.Sleep(500);
+
                 if (new Random().Next(0, 2) > 0)
                 {
-                    character.HP -= (int)(this.Strength - character.Armor);
+                    character.HP -= (int)(Strength - character.Armor);
                 }
 
                 if (character.HP > 0)
@@ -107,7 +107,6 @@ namespace Seed.Characters
                     Console.Read();
                     Environment.Exit(0);
                 }
-
             }
             else
             {

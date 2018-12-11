@@ -57,7 +57,7 @@ namespace Seed.Tests
 
             location1.ChangeDoorState(Direction.South, After);
 
-            location1.South.isOpen.Should().Be(After);
+            location1.South.DoorState.Should().Be(After);
         }
 
         [Test]
@@ -76,38 +76,38 @@ namespace Seed.Tests
             {
                 case Direction.North:
                     {
-                        location1.North.isOpen.Should().Be(fromHereDoorState);
-                        location2.South.isOpen.Should().Be(fromThereDoorState);
+                        location1.North.DoorState.Should().Be(fromHereDoorState);
+                        location2.South.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
                 case Direction.South:
                     {
-                        location1.South.isOpen.Should().Be(fromHereDoorState);
-                        location2.North.isOpen.Should().Be(fromThereDoorState);
+                        location1.South.DoorState.Should().Be(fromHereDoorState);
+                        location2.North.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
                 case Direction.East:
                     {
-                        location1.East.isOpen.Should().Be(fromHereDoorState);
-                        location2.West.isOpen.Should().Be(fromThereDoorState);
+                        location1.East.DoorState.Should().Be(fromHereDoorState);
+                        location2.West.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
                 case Direction.West:
                     {
-                        location1.West.isOpen.Should().Be(fromHereDoorState);
-                        location2.East.isOpen.Should().Be(fromThereDoorState);
+                        location1.West.DoorState.Should().Be(fromHereDoorState);
+                        location2.East.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
                 case Direction.Up:
                     {
-                        location1.Up.isOpen.Should().Be(fromHereDoorState);
-                        location2.Down.isOpen.Should().Be(fromThereDoorState);
+                        location1.Up.DoorState.Should().Be(fromHereDoorState);
+                        location2.Down.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
                 case Direction.Down:
                     {
-                        location1.Down.isOpen.Should().Be(fromHereDoorState);
-                        location2.Up.isOpen.Should().Be(fromThereDoorState);
+                        location1.Down.DoorState.Should().Be(fromHereDoorState);
+                        location2.Up.DoorState.Should().Be(fromThereDoorState);
                     }
                     break;
             }
