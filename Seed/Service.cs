@@ -127,7 +127,7 @@ namespace Seed
 
             foreach (var c in Characters)
             {
-                if (c.GetType() != typeof(Player))
+                if (!(c is Player))
                 {
                     DisplayLongString($"{c.Name} {c.Description}");
                 }
@@ -160,6 +160,7 @@ namespace Seed
         private static void LetCharacterFollow(Character character)
         {
             var follower = (IFollow) character;
+
             if (follower.IsFollowing)
             {
                 follower.Follow();
@@ -186,12 +187,14 @@ namespace Seed
 
                 }
 
-                foreach (var defender in character.presentLocation.CharactersInLocation)
-                {
-                    if (defender.HP > 0 && character != defender)
+                if(character.HP>0)
+                {    foreach (var defender in character.presentLocation.CharactersInLocation)
                     {
-                        attacker.Attack(defender);
-                        break;
+                        if (defender.HP > 0 && character != defender)
+                        {
+                            attacker.Attack(defender);
+                            break;
+                        }
                     }
                 }
             }

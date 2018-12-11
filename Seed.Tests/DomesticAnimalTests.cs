@@ -23,31 +23,7 @@ namespace Seed.Tests
             poorKitten.FollowedCharacter.Should().NotBeNull();
             poorKitten.StepsRemaining.Should().BeGreaterThan(0);
         }
-
-        [Test]
-        [Category("DomesticAnimal.Follow")]
-        public void ShouldNotChangeFollowedCharacter()
-        {
-            var location1 = new Location();
-            var location2 = new Location(parentDirection: Direction.North, parentLocation: location1);
-            var location3=new Location(parentDirection:Direction.Down, parentLocation:location2);
-            var someGuy=new Human(presentLocation:location1);
-            var anotherGuy=new Human(presentLocation:location2);
-            var goodBoi=new DomesticAnimal(presentLocation:location1);
-            goodBoi.ThinkAboutFollowing();
-            goodBoi.StepsRemaining = 4;
-            someGuy.Move(Direction.South);
-            goodBoi.Follow();
-            goodBoi.ThinkAboutFollowing();
-            someGuy.Move(Direction.Up);
-            anotherGuy.Move(Direction.North);
-            goodBoi.Follow();
-
-            someGuy.presentLocation.Should().Be(location3);
-            goodBoi.presentLocation.Should().BeSameAs(someGuy.presentLocation);
-            goodBoi.FollowedCharacter.Should().NotBe(anotherGuy);
-        }
-
+        
         [Test]
         [Category("DomesticAnimal.Follow")]
         public void ShouldStopFollowIfFollowedCharacterWentTooFar()
@@ -68,6 +44,7 @@ namespace Seed.Tests
 
             someGuy.presentLocation.Should().Be(location4);
             goodBoi.presentLocation.Should().Be(location2);
+            location2.CharactersInLocation.Should().Contain(goodBoi);
             goodBoi.IsFollowing.Should().Be(false);
             goodBoi.FollowedCharacter.Should().Be(null);
             goodBoi.StepsRemaining.Should().Be(0);
@@ -117,6 +94,7 @@ namespace Seed.Tests
             cockatoo.StepsRemaining.Should().Be(0);
             cockatoo.IsFollowing.Should().Be(false);
             cockatoo.presentLocation.Should().Be(location3);
+            location3.CharactersInLocation.Should().Contain(cockatoo);
         }
 
         [Test]

@@ -87,7 +87,7 @@ namespace Seed.Characters
                 case Direction.North:
                     {
                         if (presentLocation.North.DoorState != DoorState.Closed &&
-                            presentLocation.North.Location!=null)
+                            presentLocation.North.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             presentLocation = presentLocation.North.Location;
@@ -116,8 +116,8 @@ namespace Seed.Characters
                     break;
                 case Direction.East:
                     {
-                        if (presentLocation.East.DoorState != DoorState.Closed && 
-                            presentLocation.East.Location!=null)
+                        if (presentLocation.East.DoorState != DoorState.Closed &&
+                            presentLocation.East.Location != null)
                         {
                             presentLocation.CharactersInLocation.Remove(this);
                             presentLocation = presentLocation.East.Location;
@@ -188,47 +188,47 @@ namespace Seed.Characters
             switch (direction)
             {
                 case Direction.North:
-                {
-                    if (presentLocation.North.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.North.Location;
-                    return true;
+                    {
+                        if (presentLocation.North.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.North.Location;
+                        return true;
 
-                }
+                    }
                 case Direction.South:
-                {
-                    if (presentLocation.South.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.South.Location;
-                    return true;
+                    {
+                        if (presentLocation.South.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.South.Location;
+                        return true;
 
-                }
+                    }
                 case Direction.East:
-                {
-                    if (presentLocation.East.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.East.Location;
-                    return true;
+                    {
+                        if (presentLocation.East.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.East.Location;
+                        return true;
 
-                }
+                    }
                 case Direction.West:
-                {
-                    if (presentLocation.West.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.West.Location;
-                    return true;
+                    {
+                        if (presentLocation.West.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.West.Location;
+                        return true;
 
-                }
+                    }
                 case Direction.Up:
-                {
-                    if (presentLocation.Up.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.Up.Location;
-                    return true;
+                    {
+                        if (presentLocation.Up.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.Up.Location;
+                        return true;
 
-                }
+                    }
                 case Direction.Down:
-                {
-                    if (presentLocation.Down.DoorState != DoorState.Open) return false;
-                    presentLocation = presentLocation.Down.Location;
-                    return true;
+                    {
+                        if (presentLocation.Down.DoorState != DoorState.Open) return false;
+                        presentLocation = presentLocation.Down.Location;
+                        return true;
 
-                }
+                    }
                 default:
                     return false;
             }
@@ -272,15 +272,16 @@ namespace Seed.Characters
                 Console.WriteLine("Nie możesz tego na siebie założyć.");
                 return;
             }
-            else if (item is Armor)
+
+            if (item is Armor)
             {
-                string type = "";
                 foreach (var i in WornItems)
-                    if (i.GetType() == typeof(Armor) && CheckIfArmorTypeIsTheSame((Armor)item, (Armor)i, ref type))
+                    if (i is Armor && CheckIfArmorTypeIsTheSame((Armor)item, (Armor)i))
                     {
-                        Console.WriteLine($"Już masz na sobie {type}.");
+                        Console.WriteLine($"Już masz na sobie {WhichTypeOfArmor((Armor)i)}.");
                         return;
                     }
+
                 IncreaseArmor((Armor)item);
             }
             else if (item is Bag)
@@ -326,36 +327,37 @@ namespace Seed.Characters
             CarryingCapacity += bag.CarryingCapacity;
         }
 
-        private bool CheckIfArmorTypeIsTheSame(Armor itemToWear, Armor itemWorn, ref string type)
+        private static bool CheckIfArmorTypeIsTheSame(Armor itemToWear, Armor itemWorn)
         {
-            if (itemToWear.Type == itemWorn.Type)
-            {
-                switch (itemToWear.Type)
-                {
-                    case ArmorType.Boots:
-                        type = "buty";
-                        break;
-                    case ArmorType.Gloves:
-                        type = "rękawice";
-                        break;
-                    case ArmorType.Helmet:
-                        type = "hełm";
-                        break;
-                    case ArmorType.Jacket:
-                        type = "zbroję";
-                        break;
-                    case ArmorType.Shield:
-                        type = "tarczę";
-                        break;
-                    case ArmorType.Trousers:
-                        type = "spodnie";
-                        break;
-                }
+            return itemToWear.Type == itemWorn.Type;
+        }
 
-                return true;
+        private static string WhichTypeOfArmor(Armor itemWorn)
+        {
+            var type = "";
+            switch (itemWorn.Type)
+            {
+                case ArmorType.Boots:
+                    type = "buty";
+                    break;
+                case ArmorType.Gloves:
+                    type = "rękawice";
+                    break;
+                case ArmorType.Helmet:
+                    type = "hełm";
+                    break;
+                case ArmorType.Jacket:
+                    type = "zbroję";
+                    break;
+                case ArmorType.Shield:
+                    type = "tarczę";
+                    break;
+                case ArmorType.Trousers:
+                    type = "spodnie";
+                    break;
             }
 
-            return false;
+            return type;
         }
 
         public void TakeOff(Item item)
