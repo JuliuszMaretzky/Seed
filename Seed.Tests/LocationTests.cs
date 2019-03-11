@@ -113,5 +113,21 @@ namespace Seed.Tests
             }
 
         }
+
+        [Test]
+        [Category("Location.Constructor")]
+        public void ShouldCreateThreeWayPassage()
+        {
+            var location1 = new Location();
+            var location2=new Location(parentDirection:Direction.West, parentLocation:location1);
+            var location3 = new Location(parentDirection: Direction.West, parentLocation: location1);
+
+            location1.East.Location.Should().Be(location3);
+            location1.East.DoorState.Should().Be(DoorState.Open);
+            location2.West.Location.Should().Be(location1);
+            location2.West.DoorState.Should().Be(DoorState.Open);
+            location3.West.Location.Should().Be(location1);
+            location3.West.DoorState.Should().Be(DoorState.Open);
+        }
     }
 }
